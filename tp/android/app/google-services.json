@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1093686155449",
+    "project_id": "elite-conquest-371806",
+    "storage_bucket": "elite-conquest-371806.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093686155449:android:1a3203a85575d0f66b6368",
+        "android_client_info": {
+          "package_name": "com.example.tp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1093686155449-gmgp8pphje4n5hk0k80i0m21f4mbpecs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXWvloNHzBTw99NGJZKiiuk7zy9WTBD_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1093686155449-gmgp8pphje4n5hk0k80i0m21f4mbpecs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
