@@ -81,8 +81,26 @@ class Utilisateur {
 
   static Future ajouterAuPanier(Produit product, String id) async {
     try {
-      Panier p = (await Panier.fetch(id)) as Panier;
-      p.produit!.add(product);
+
+      await Panier.fetch(id);
+      List<Produit> prod = [];
+      Panier p;
+      if(Panier.panier == null){
+        //q!.produit!.add(product);
+        prod.add(product);
+        p = Panier(produit: prod, commander: false, userId: id);
+      }else{
+        p = Panier.panier!;
+        p.produit!.add(product);
+        //prod = Panier.prod;
+        //prod.add(product);
+      }
+
+      //List<Produit> pro = p.first.produit!;
+      //pro.add(product);
+      //Panier q = p.first;
+      //q.produit = pro;
+
       await FirebaseFirestore.instance.collection('panier')
           .doc(Panier.idP)
           .delete();

@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget{
     return HomePageState();
   }
 
+
 }
 class HomePageState extends State<HomePage>{
   final _key = GlobalKey<ScaffoldState>();
@@ -114,29 +115,28 @@ class HomePageState extends State<HomePage>{
   Widget build(BuildContext context) {
     Widget image_carousel = Container(
       height: 200,
-      child: Carousel(
+      child: const Carousel(
+        autoplayDuration: Duration(seconds: 5),
         boxFit: BoxFit.contain,
-        autoplay: false,
+        autoplay: true,
         dotSize: 4.0,
         indicatorBgPadding: 2.0,
         images: [
-          InkWell(
+          /*InkWell(
             onTap: () {
-              //print("ggggggggggggggggggggggggggggggggggggggggggggggg");
             },
             child: Image.network("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2F10.png?alt=media&token=e310a71e-4622-4ed3-b9e8-35bd60d551e6"),
-          ),
+          ),*/
           //NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2F10.png?alt=media&token=e310a71e-4622-4ed3-b9e8-35bd60d551e6"),
           NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2Fjamaika_2.webp?alt=media&token=6df3c6e8-9dad-4950-b928-7fd3c9c3bb81"),
           NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2Fjamaika_3.webp?alt=media&token=6cc67445-15c8-49ee-b950-3909814ea0ce"),
           NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2Fjamaika_6.webp?alt=media&token=2c13a641-2708-4961-82e7-bbaf42d52154"),
           NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2F13.jpeg?alt=media&token=476d4f17-e13b-499b-bd22-8b4ea3d3ae51"),
-          InkWell(
+          /*InkWell(
             onTap: () {
-              print("ggggggggggggggggggggggggggggggggggggggggggggggg");
             },
             child: Image.network("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2F13.jpeg?alt=media&token=476d4f17-e13b-499b-bd22-8b4ea3d3ae51"),
-          ),
+          ),*/
           //NetworkImage(url),
         ],
       ),
@@ -197,8 +197,9 @@ class HomePageState extends State<HomePage>{
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  image_carousel,
+
                   Search(),
+                  image_carousel,
                   const SizedBox(height: 30.0,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

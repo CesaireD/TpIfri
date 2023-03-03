@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../modele/produit.dart';
 import '../widgets/featured_card.dart';
+import '../widgets/product_card.dart';
 
 class VoirTous extends StatefulWidget{
   @override
@@ -13,7 +14,7 @@ class VoirTous extends StatefulWidget{
 }
 class VoirTousState extends State<VoirTous>{
 
-  Widget buildProduct() => SliverToBoxAdapter(
+  /*Widget buildProduct() => SliverToBoxAdapter(
     child: StreamBuilder<List<Produit>>(
         stream: Produit.fetch(),
         builder: (context, snapshot) {
@@ -34,11 +35,20 @@ class VoirTousState extends State<VoirTous>{
           }
         }
     ),
-  );
+  );*/
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return CustomScrollView(
+    return Column(
+        children: Produit.list.map((e) => GestureDetector(
+          child: ProductCard(product: e),
+        )
+        ).toList()
+    );
+
+
+
+      /*CustomScrollView(
       slivers: [
         SliverAppBar(
           title: const Text('Nos produits'),
@@ -54,6 +64,8 @@ class VoirTousState extends State<VoirTous>{
         buildProduct(),
       ],
     );
+
+       */
   }
   
 }

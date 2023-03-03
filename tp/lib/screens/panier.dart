@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:tp/modele/produit.dart';
+import '../modele/Panier.dart';
+import '../modele/produit.dart';
 import 'Commande.dart';
+import '../modele/produit.dart';
 import 'Home.dart';
 
-class Panier extends StatelessWidget {
+class PanierPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -24,6 +27,7 @@ class ProductRow extends StatefulWidget {
 
 class _ProductRow extends State<ProductRow> {
   int val = 1;
+  int taille = 0;
   void compte() {
     setState(() {
       val++;
@@ -44,32 +48,29 @@ class _ProductRow extends State<ProductRow> {
 
   void supprimer() {}
   List<Produit?> l =[];
+  List<Produit>? produit;
 
-  void ok() async {
-    print("-------ggggggggggg----");
+  _ok() async{
+    await Panier.fetch(FirebaseAuth.instance.currentUser!.uid);
+    produit = Panier.prod;
+        taille = Panier.prod.length;
 
-    //var p = await Produit.fetch();
-    //print(p.length);
-    l = await Produit.fetch() as List<Produit?>;
   }
 
-
   void initState() {
-    ok();
+
     super.initState();
 
   }
   List<Widget> show_list_produit() {
     List<Widget> list_r = [];
-    setState(() {
-      ok();
-    });
+
     print("+--------------------------------------------------------------------");
     print("l ${l.length}");
     print("+--------------------------------------------------------------------");
 
     l.forEach((element) {
-      Row row = new Row(
+      Row row = Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
             Dismissible(
@@ -87,72 +88,72 @@ class _ProductRow extends State<ProductRow> {
               });
 
               },
+              secondaryBackground:  Container(
+                alignment: Alignment.centerRight,
+                color: Colors.deepOrange[600],
+                child: Icon(Icons.delete,
+                size: MediaQuery.of(context).size.width/7,),
+                ),
+              background:  Container(
+                alignment: Alignment.centerLeft,
+                color: Colors.yellow[500],
+                child: Icon(Icons.star,
+                size: MediaQuery.of(context).size.width/7,),
+              ),
               child:  Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-              new Column(children: [
-              new Image.network(
+              Column(children: [
+              Image.network(
               element!.picture,
               fit: BoxFit.cover,
               height: 150,
               width: 150,
               )
               ]),
-              new Column(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                new Text(
+                Text(
                 element!.name,
                 style: TextStyle(
                 fontSize:  MediaQuery.of(context).size.width/20,
                 fontWeight: FontWeight.bold,
                 ),
                 ),
-                new Text(
+                Text(
                 "" + element!.price.toString() + " FCFA",
                 style: TextStyle(
                 color: Colors.blue[700],
                 fontSize:  MediaQuery.of(context).size.width/18
                 ),
                 ),
-                new Card(
+                Card(
                   shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5.0),
                   ),
                   color: Colors.grey[300],
-                  child: new Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                    new IconButton(
-                    onPressed: compte, icon: Icon(Icons.add)),
-                    new Text(
+                    IconButton(
+                    onPressed: compte, icon: const Icon(Icons.add)),
+                    Text(
                     val.toString(),
                       style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width/20,),
                     ),
-                    new IconButton(
+                    IconButton(
                     onPressed: decompte,
-                    icon: Icon(Icons.remove))
+                    icon: const Icon(Icons.remove))
                     ],
                   ),
                 )
               ],
               )
               ],
-              ),
-              secondaryBackground:  new Container(
-                alignment: Alignment.centerRight,
-                color: Colors.deepOrange[600],
-                child: Icon(Icons.delete,
-                size: MediaQuery.of(context).size.width/7,),
-                ),
-              background:  new Container(
-                alignment: Alignment.centerLeft,
-                color: Colors.yellow[500],
-                child: Icon(Icons.star,
-                size: MediaQuery.of(context).size.width/7,),
               ),
             )
         ],
@@ -172,17 +173,18 @@ int total(int val) {
     return prix_total+=val;
 }
   Widget affiche_produit() {
-    return StreamBuilder<List<Produit>>(
-        stream: Produit.fetch(),
+    return /*StreamBuilder<List<Produit>>(
+        stream: produit!,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('${snapshot.error}');
           } else if (snapshot.hasData) {
             final produits = snapshot.data!;
-            return ListView.builder(
+            return */ListView.builder(
                 scrollDirection: Axis.vertical,
-                itemCount: produits.length,
+                itemCount: Panier.prod.length,
                 itemBuilder: (_, index) {
+                  final produits = Panier.prod;
                   return  Dismissible(
                     key: UniqueKey(),
                     direction: DismissDirection.horizontal,
@@ -202,67 +204,10 @@ int total(int val) {
                       });
 
                     },
-                    child:  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        new Column(children: [
-                         new Padding(padding: EdgeInsets.only(right:MediaQuery.of(context).size.width/3.5),
-                         child:  new Image.network(
-                           produits[index].picture,
-                           fit: BoxFit.contain,
-                           height: 150,
-                           width: 150,
-                         ))
-                        ]),
-                        new Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            new Text(
-                              produits[index].name,
-                              style: TextStyle(
-                                fontSize:  MediaQuery.of(context).size.width/20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            new Text(
-                              "" + produits[index].price.toString() + " FCFA",
-                              style: TextStyle(
-                                color: Colors.blue[700],
-                                fontSize:  MediaQuery.of(context).size.width/18
-                              ),
-                            ),
-                            new Card(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                 ),
-                              color: Colors.grey[300],
-                              child: new Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  new IconButton(
-                                      onPressed: compte, icon: Icon(Icons.add)),
-                                  new Text(
-                                    val.toString(),
-                                    style: TextStyle(
-                                      fontSize: MediaQuery.of(context).size.width/20,
-                                    ),
-                                  ),
-                                  new IconButton(
-                                      onPressed: decompte,
-                                      icon: Icon(Icons.remove))
-                                ],
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                    secondaryBackground:  new Container(
+                    secondaryBackground:  Container(
                       alignment: Alignment.centerRight,
                       color: Colors.deepOrange[600],
-                      child:new Row(
+                      child:Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         // color: Colors.deepOrange[600],
                         children: [
@@ -276,7 +221,7 @@ int total(int val) {
                       ]
                       ),
                     ),
-                    background:  new Container(
+                    background:  Container(
                       alignment: Alignment.centerLeft,
                       color: Colors.yellow[500],
                       child: Row(
@@ -293,12 +238,69 @@ int total(int val) {
                           ]
                       ),
                   ),
+                    child:  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Column(children: [
+                         Padding(padding: EdgeInsets.only(right:MediaQuery.of(context).size.width/3.5),
+                         child:  Image.network(
+                           produits[index].picture,
+                           fit: BoxFit.contain,
+                           height: 150,
+                           width: 150,
+                         ))
+                        ]),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              produits[index].name,
+                              style: TextStyle(
+                                fontSize:  MediaQuery.of(context).size.width/20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "" + produits[index].price.toString() + " FCFA",
+                              style: TextStyle(
+                                color: Colors.blue[700],
+                                fontSize:  MediaQuery.of(context).size.width/18
+                              ),
+                            ),
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                 ),
+                              color: Colors.grey[300],
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  IconButton(
+                                      onPressed: compte, icon: const Icon(Icons.add)),
+                                  Text(
+                                    val.toString(),
+                                    style: TextStyle(
+                                      fontSize: MediaQuery.of(context).size.width/20,
+                                    ),
+                                  ),
+                                  IconButton(
+                                      onPressed: decompte,
+                                      icon: const Icon(Icons.remove))
+                                ],
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   );
                 });
-          } else {
+          /*} else {
             return const Center(child: CircularProgressIndicator());
-          }
-        });
+          }*/
+        //});
   }
 
   /*Widget affiche_produit() {
@@ -383,7 +385,7 @@ Widget expanded_widget(int value){
   if(value==0){
     return Expanded(
         flex: index_expanded,
-        child: new InkWell(
+        child: InkWell(
           onTap: (){
             setState(() {
               if(index_expanded==0){
@@ -393,26 +395,26 @@ Widget expanded_widget(int value){
               }
             });
           },
-          child: new Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget> [
-              new Column(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  new Text("TOTAL",
+                  Text("TOTAL",
                     style: TextStyle(
                       color: Colors.grey[700],
                       fontSize: MediaQuery.of(context).size.width/19,
                     ),),
-                  new Text("$prix_total FCA",
+                  Text("$prix_total FCA",
                     style: TextStyle(
                         color:Colors.blue[900],
                         fontSize: MediaQuery.of(context).size.width/15
                     ),),
                 ],
               ),
-              new ElevatedButton(
+              ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.resolveWith((color) => Colors.blue[900])
                   ),
@@ -421,7 +423,7 @@ Widget expanded_widget(int value){
                         return Commande();
                       }));
                   },
-                  child: new Text("VERIFIER",style: TextStyle(
+                  child: Text("VERIFIER",style: TextStyle(
                     fontSize: MediaQuery.of(context).size.width/15,
                   ),))
             ],
@@ -431,7 +433,7 @@ Widget expanded_widget(int value){
   }else{
    return Expanded(
         flex: index_expanded,
-        child: new InkWell(
+        child: InkWell(
           onTap: (){
             setState(() {
               if(index_expanded==0){
@@ -441,19 +443,19 @@ Widget expanded_widget(int value){
               }
             });
           },
-          child: new Card(
+          child: Card(
 
-            child: new Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                new Column(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    new Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/1.5),
-                        child: new Text("Sous total:",style: TextStyle(
+                        Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/1.5),
+                        child: Text("Sous total:",style: TextStyle(
                           fontSize: MediaQuery.of(context).size.width/20,
                           color: Colors.grey[700],
                         ),),),
@@ -462,15 +464,15 @@ Widget expanded_widget(int value){
                         fontSize: MediaQuery.of(context).size.width/20
                       ),)
                       ],
-                    ), new Row(
+                    ), Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/1.29),
-                        child: new Text("Impôt: ",style: TextStyle(
+                        Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/1.29),
+                        child: Text("Impôt: ",style: TextStyle(
                           fontSize: MediaQuery.of(context).size.width/20,
                           color: Colors.grey[700],
                         ),),),
-                        new Text("$impot",style: TextStyle(
+                        Text("$impot",style: TextStyle(
                           fontSize: MediaQuery.of(context).size.width/20,
                           color: Colors.blue[900],
                         ),),
@@ -478,14 +480,14 @@ Widget expanded_widget(int value){
                     ),
                   ],
                 ),
-                new ElevatedButton(
+                ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith((color) => Colors.blue[900])
                     ),
                     onPressed: (){
                       //todo fonction de "verification"
                     },
-                    child: new Text("VERIFIER",style: TextStyle(
+                    child: Text("VERIFIER",style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width/15,
                     ),))
               ],
@@ -498,24 +500,26 @@ Widget expanded_widget(int value){
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
-        title: Text("Panier"),
+      appBar: AppBar(
+        title: const Text("Panier"),
         backgroundColor: Colors.white,
         elevation: 0,
-        titleTextStyle: TextStyle(
+        titleTextStyle: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
-        leading: new IconButton(
+        leading: IconButton(
             onPressed: retour,
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_ios,
               color: Colors.black,
             )),
         actions: [
           Container(
-            child: new IconButton(
+            decoration:
+                const BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+            child: IconButton(
               onPressed: Rechercher,
               icon: Icon(
                 Icons.search,
@@ -523,15 +527,13 @@ Widget expanded_widget(int value){
                 color: Colors.blue[900],
               ),
             ),
-            decoration:
-                BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
           ),
         ],
         centerTitle: true,
       ),
       //TODO faire en sorte que le truc puisse afficher les produits
       //Todo le singchildscrollView n'accepte pas le card vis versa
-      body: new Column(
+      body: Column(
           //elevation: 1,
                children: [
                  Expanded(child: affiche_produit()),

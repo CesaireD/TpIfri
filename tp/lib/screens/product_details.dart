@@ -5,6 +5,7 @@ import 'package:tp/modele/User.dart';
 import '../helpers/common.dart';
 import '../helpers/style.dart';
 import '../modele/app.dart';
+import '../utils/Constant.dart';
 import '../widgets/custom_text.dart';
 import '../widgets/loading.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       key: _key,
       body: SafeArea(
           child: Container(
-        color: Colors.black.withOpacity(0.9),
+        //color: Colors.black.withOpacity(0.9),
         child: Column(
           children: <Widget>[
             Stack(
@@ -76,6 +77,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             //Colors.black.withOpacity(0.07),
                             Colors.black.withOpacity(0.05),
                             Colors.black.withOpacity(0.025),
+                            Colors.black.withOpacity(0.025),
                           ],
                         ),
                       ),
@@ -96,10 +98,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                           // Add one stop for each color. Stops should increase from 0 to 1
                           colors: [
                             // Colors are easy thanks to Flutter's Colors class.
-                            Colors.black.withOpacity(0.8),
-                            Colors.black.withOpacity(0.6),
-                            Colors.black.withOpacity(0.6),
-                            Colors.black.withOpacity(0.4),
+                            //Colors.black.withOpacity(0.8),
+                            //Colors.black.withOpacity(0.6),
+                            //Colors.black.withOpacity(0.6),
+                            Colors.black.withOpacity(0.3),
                             Colors.black.withOpacity(0.07),
                             Colors.black.withOpacity(0.05),
                             Colors.black.withOpacity(0.025),
@@ -201,7 +203,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.black,
+                          color: Colors.white70,
                           offset: Offset(2, 5),
                           blurRadius: 10)
                     ]),
@@ -211,18 +213,18 @@ class _ProductDetailsState extends State<ProductDetails> {
 
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Text(
                              'Description:\n${widget.product!.description}\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s  Lorem Ipsum has been the industry standard dummy text ever since the 1500s ',
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(color: Colors.black)),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(9),
                       child: Material(
                           borderRadius: BorderRadius.circular(15.0),
-                          color: Colors.white,
-                          elevation: 0.0,
+                          color: Colors.blue,
+                          //elevation: 0.0,
                           child: MaterialButton(
                             onPressed: () async {
                               final  app = AppProvider();
@@ -231,11 +233,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                               app.changeIsLoading();
                               bool success = await Utilisateur.ajouterAuPanier(widget.product!, id);
                               if (success) {
+                                Constant.showSnackBar("Ajouter avec succes");
                                 //_key.currentState.showSnackBar(SnackBar(content: Text("Added to Cart!")));
                                 //userProvider.reloadUserModel();
                                 app.changeIsLoading();
                                 return;
                               } else {
+                                Constant.showSnackBar("Echec ...");
                                 /*_key.currentState.showSnackBar(SnackBar(
                                     content: Text("Not added to Cart!")));*/
                                 app.changeIsLoading();
@@ -246,10 +250,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                             child: AppProvider.isLoading1
                                 ? Loading()
                                 : const Text(
-                                    "Add to cart",
+                                    "Ajouter au panier",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Colors.black,
+                                       // color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20.0),
                                   ),
