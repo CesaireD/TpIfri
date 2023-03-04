@@ -22,11 +22,13 @@ class FeaturedProductsState extends State<FeaturedProducts>{
   );*/
   @override
   Widget build(BuildContext context) {
-    final  produit = Produit.fetch();
+    List  produit;
     int? taille;
 
     Future<void> tailleGetter() async {
-      int count = await produit.length;
+      await Produit.fetch();
+
+      int count = Produit.list.length;
       taille = count;
     }
 
@@ -41,18 +43,22 @@ class FeaturedProductsState extends State<FeaturedProducts>{
       child: StreamBuilder<List<Produit>>(
           stream: Produit.fetch(),
           builder: (context, snapshot) {
+            //print(snapshot.data!.length);//---------------------
             if(snapshot.hasError){
               return Text('${snapshot.error}');
             }else if(snapshot.hasData){
               final produits = snapshot.data!;
+              //print(produits.length);//********************
+              //print(taille);
               return ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: taille,
+                  itemCount: produits.length,
                   itemBuilder: (_, index) {
-                    if(produits[index].feature == false) {
+                    //print(produits[index].feature);//------------------------
+                    if(produits[index].feature != false) {
                       return FeaturedCard(produit: produits[index]);
                     }else{
-                      return null;
+                      return const SizedBox();
                     }
                   }
               );

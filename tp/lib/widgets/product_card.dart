@@ -81,7 +81,7 @@ class _ProductCardState extends State<ProductCard>{
 
                    */
                   TextSpan(
-                    text: '\$${widget.product.price /100} \t',
+                    text: '\${widget.product.price /100} cfa \t',
                     style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   TextSpan(
