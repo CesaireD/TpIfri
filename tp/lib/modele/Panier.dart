@@ -32,15 +32,14 @@ class Panier {
     await docProduit.set(json);
   }
 
+  static num getTotal() {
+    totalPrix = 0;
+    prod.forEach((element) {
+      totalPrix += element.price;
+    });
+    return totalPrix;
+  }
 
-  /*static Future<Stream<List<Produit>>> fetch(String id) async {
-    var v = FirebaseFirestore.instance.collection('panier').where("userid", isEqualTo: id).snapshots().map((event) => event.docs.map((e) => Produit.fromJson(e.data())).toList());
-    //v.forEach((element) {prod.add(element); totalPrix += element.price;});
-    for(Produit p in v as List<Produit>){
-      prod.add(p);
-    }
-    return v;
-  }*/
 
   static Future<void> fetch(String idU) async {
     final v = await FirebaseFirestore.instance.collection('panier').doc(idU);
