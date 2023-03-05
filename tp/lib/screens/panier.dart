@@ -133,25 +133,33 @@ class _ProductRow extends State<ProductRow> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Column(children: [
-                  Padding(padding: EdgeInsets.only(right:MediaQuery.of(context).size.width/4.5),
-                      child:  Image.network(
+                  Padding(padding: EdgeInsets.only(right:MediaQuery.of(context).size.width/10),
+                      child:  new Card(
+                        margin: EdgeInsets.only(left: 10),
+                        child: Image.network(
                         produits[index].picture,
                         fit: BoxFit.contain,
                         height: 150,
                         width: 150,
-                      ))
+                      )),
+                      )
                 ]),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      produits[index].name,
-                      style: TextStyle(
-                        fontSize:  MediaQuery.of(context).size.width/20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                   Card(
+                     color: Colors.white,
+                     elevation: 0.0,
+                     margin: EdgeInsets.only(right: 5),
+                     child:  Text(
+                       produits[index].name,
+                       style: TextStyle(
+                         fontSize:  MediaQuery.of(context).size.width/20,
+                         fontWeight: FontWeight.bold,
+                       ),
+                     ),
+                   ),
                     Text(
                       "" + produits[index].price.toString() + " FCFA",
                       style: TextStyle(
