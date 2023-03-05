@@ -43,7 +43,7 @@ class Panier {
   }*/
 
   static Future<void> fetch(String idU) async {
-    final v = await FirebaseFirestore.instance.collection('panier').doc('kiytaT5923uQErKwnbbz');
+    final v = await FirebaseFirestore.instance.collection('panier').doc(idU);
     /*v.forEach((element) {
       //element.forEach((element) {
         prod = element.produit! ;
@@ -69,12 +69,12 @@ class Panier {
         });
         //Produit.fetchByID(element.id);
       });
+      print("R------${panier!.id},--------");
     }else{
       print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
     }
     //panier = v.get()
 
-    print("R------${panier!.id},--------");
     //return v;
   }
 

@@ -89,7 +89,7 @@ class Utilisateur {
       //List<Produit> prod = [];
       Panier p;
       if(Panier.panier == null){
-
+        print("1---------------------------------");
         final ref = await FirebaseFirestore.instance.collection('panier')
             .doc(id);
 
