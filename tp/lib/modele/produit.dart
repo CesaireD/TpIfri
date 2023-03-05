@@ -95,6 +95,14 @@ class Produit {
 
 }
 
+class ProdString {
+  String id;
+  ProdString({required this.id});
+  static ProdString fromJson(Map<String,dynamic> json) => ProdString(
+      id: json['id']
+  );
+}
+
 /*
 
 

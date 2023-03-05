@@ -16,6 +16,7 @@ class Panier {
   static Panier? panier;
 
 
+
   Panier({this.produit, this.commander, this.id, this.userId});
 
   add() async {
@@ -42,7 +43,7 @@ class Panier {
   }*/
 
   static Future<void> fetch(String idU) async {
-    final v = await FirebaseFirestore.instance.collection('panier').where("userid", isEqualTo: idU).limit(1);///.snapshots()/*map((event) => event.docs*/.map((e) => Panier.fromJson(e.data()!));
+    final v = await FirebaseFirestore.instance.collection('panier').doc('kiytaT5923uQErKwnbbz');
     /*v.forEach((element) {
       //element.forEach((element) {
         prod = element.produit! ;
@@ -53,13 +54,33 @@ class Panier {
 
     });*/
     final snapshot = await v.get();
-    //if(snapshot.exists){
-      //panier = Panier.fromJson(snapshot.data()!);
-   // }
+    if(snapshot.exists){
+      //ProdString p;
+      panier = Panier.fromJson(snapshot.data()!);
+      final w = FirebaseFirestore.instance.collection('panier').doc(idU).collection("produit").snapshots()
+          .map((snapshot) => snapshot.docs.map((doc) => ProdString.fromJson(doc.data())).toList());
+      w.forEach((element) {
+        element.forEach((element) async{
+          print("1---//////////////////////////////////");
+          print(element.id);
+          final pr = await Produit.fetchByID(element.id);
+          prod.add(pr!);
+
+        });
+        //Produit.fetchByID(element.id);
+      });
+    }else{
+      print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
+    }
     //panier = v.get()
 
     print("R------${panier!.id},--------");
     //return v;
+  }
+
+  static dispose() {
+    prod.clear();
+    panier = null;
   }
 
   Map<String,dynamic> toJson() => {

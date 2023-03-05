@@ -82,24 +82,30 @@ class Utilisateur {
   static Future ajouterAuPanier(Produit product, String id) async {
     try {
       print("A-----${id}----------");
+
+      Panier.dispose();
       await Panier.fetch(id);
       //print("1----------${Panier.panier!.id}---------------");
       //List<Produit> prod = [];
-      //Panier p;
-      /*if(Panier.panier == null){
-        //q!.produit!.add(product);
+      Panier p;
+      if(Panier.panier == null){
+
         final ref = await FirebaseFirestore.instance.collection('panier')
-            .doc();
-            print("1----------${ref.id}---------------");
-        final doc = await FirebaseFirestore.instance.collection('panier')
-            .doc(ref.id).collection('produit').doc();
-        print("2-----------${doc.id}--------------");
+            .doc(id);
 
         //prod.add(product);
         p = Panier(id: ref.id, commander: false, userId: id);
         ref.set(p.toJson());
+
+        final doc = await FirebaseFirestore.instance.collection('panier')
+            .doc(id).collection('produit').doc(product.id);
+        doc.set(product.toJson());
+
       }else{
-        print("2-----------${Panier.panier!.id}--------------");
+        print("2--------${Panier.panier!.id}--------------");
+        final doc = await FirebaseFirestore.instance.collection('panier')
+            .doc(id).collection('produit').doc(product.id);
+        doc.set(product.toJson());
         /*p = Panier.panier!;
         p.produit!.add(product);
         await FirebaseFirestore.instance.collection('panier')
@@ -112,7 +118,7 @@ class Utilisateur {
         //prod.add(product);
 
          */
-      }*/
+      }
 
       //List<Produit> pro = p.first.produit!;
       //pro.add(product);
