@@ -64,8 +64,8 @@ class _ProductRow extends State<ProductRow> {
   }
   Widget show_list_produit() {
 
-    print("+--------------------------------------------------------------------");
-    print("l ${l.length}");
+    //print("+--------------------------------------------------------------------");
+    //print("l ${l.length}");
     print("+--------------------------------------------------------------------");
     print("Nombre de produit dans le panier :${Panier.prod.length}");
    return ListView.builder(
@@ -73,6 +73,8 @@ class _ProductRow extends State<ProductRow> {
         itemCount: Panier.prod.length,
         itemBuilder: (_, index) {
           final produits = Panier.prod;
+          //total(produits[index].price);
+          prix_total += produits[index].price;
           return  Dismissible(
             key: UniqueKey(),
             direction: DismissDirection.horizontal,
@@ -284,8 +286,8 @@ void onAddToFavorites(){
   //TODO pour ajouter aux favoris
 }
 var prix_total=0;
-int total(int val) {
-    return prix_total+=val;
+void total(int val) {
+    prix_total+=val;
 }
   Widget affiche_produit() {
     return /*StreamBuilder<List<Produit>>(
