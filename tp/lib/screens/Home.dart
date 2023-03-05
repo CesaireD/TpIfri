@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_nullsafety/carousel_nullsafety.dart';
 import 'package:tp/modele/produit.dart';
+import 'package:tp/screens/panier.dart';
+import 'package:tp/screens/profile.dart';
 import '../helpers/style.dart';
 
 import '../Search.dart';
@@ -24,7 +26,7 @@ class HomePageState extends State<HomePage>{
   final _recherche = TextEditingController();
   String _dropdownValue = "Art contemporain";
   String _searchValue = '';
-  int? choix;
+  int choix=0;
   final List<String> _suggestions = [
     'contemporain',
     'peinture',
@@ -148,15 +150,20 @@ class HomePageState extends State<HomePage>{
       ),
       drawer: const Draweer(),
       bottomNavigationBar: BottomNavigationBar(
-        //currentIndex: choix!,
+        currentIndex: choix,
         onTap: (int index){
           setState(() {
             choix=index;
+            print("choix : $choix");
           });
         },
         items: <BottomNavigationBarItem> [
           BottomNavigationBarItem(
-            icon: TextButton(onPressed: () {},
+            icon: TextButton(onPressed: () {
+              setState(() {
+                choix=0;
+              });
+            },
                 child: const Text(
                   "Explorer",
                   style: TextStyle(
@@ -186,7 +193,7 @@ class HomePageState extends State<HomePage>{
 
 
 
-      SafeArea(
+      choix ==0? SafeArea(
         child: ListView(
           children: [
             Container(
@@ -323,7 +330,7 @@ class HomePageState extends State<HomePage>{
             ),
           ] 
         ),
-      ),
+      ):(choix == 1? PanierPage():Profile()),
     );
   }
   
