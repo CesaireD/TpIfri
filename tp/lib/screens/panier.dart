@@ -131,7 +131,7 @@ class _ProductRow extends State<ProductRow> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Column(children: [
-                  Padding(padding: EdgeInsets.only(right:MediaQuery.of(context).size.width/3.5),
+                  Padding(padding: EdgeInsets.only(right:MediaQuery.of(context).size.width/4.5),
                       child:  Image.network(
                         produits[index].picture,
                         fit: BoxFit.contain,

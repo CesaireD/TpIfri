@@ -10,10 +10,10 @@ class _ProfilePageState extends State<Profile> {
   final user = FirebaseAuth.instance.currentUser!;
 
   String? _firstName ;
-  String _lastName = 'Doe';
-  String _email = 'johndoe@example.com';
+  String _lastName = '';
+  String _email = '';
   String _phone="" ;//= '+1 555-123-4567';
-  String _bio = 'Hello, I am John Doe!';
+  String _bio = '';
 
   @override
   Widget build(BuildContext context) {
