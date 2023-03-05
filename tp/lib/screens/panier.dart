@@ -62,14 +62,13 @@ class _ProductRow extends State<ProductRow> {
     super.initState();
 
   }
-  List<Widget> show_list_produit() {
-    List<Widget> list_r = [];
+  Widget show_list_produit() {
 
     print("+--------------------------------------------------------------------");
     print("l ${l.length}");
     print("+--------------------------------------------------------------------");
-
-    ListView.builder(
+    print("Nombre de produit dans le panier :${Panier.prod.length}");
+   return ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: Panier.prod.length,
         itemBuilder: (_, index) {
@@ -277,7 +276,6 @@ class _ProductRow extends State<ProductRow> {
       );
       list_r.add(row);
     });*/
-    return list_r;
   }
 void onDelete(){
   //TODO fonction pour supprimer un produit du panier
@@ -653,7 +651,7 @@ Widget expanded_widget(int value){
       body: Column(
           //elevation: 1,
                children: [
-                 Expanded(child: affiche_produit()),
+                 Expanded(child: show_list_produit()),
                   expanded_widget(index_expanded)
                ],
   /*new SingleChildScrollView(
