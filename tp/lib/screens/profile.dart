@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -6,14 +7,20 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<Profile> {
-  String _firstName = 'John';
+  final user = FirebaseAuth.instance.currentUser!;
+
+  String? _firstName ;
   String _lastName = 'Doe';
   String _email = 'johndoe@example.com';
-  String _phone = '+1 555-123-4567';
+  String _phone="" ;//= '+1 555-123-4567';
   String _bio = 'Hello, I am John Doe!';
 
   @override
   Widget build(BuildContext context) {
+    _firstName=user.displayName!;
+    _email=user.email!;
+    _phone=user.phoneNumber.toString();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
@@ -71,7 +78,7 @@ class _ProfilePageState extends State<Profile> {
               leading: Icon(Icons.logout),
               title: Text('Log Out'),
               onTap: () {
-                // TODO: log out the user
+                FirebaseAuth.instance.signOut();
               },
             ),
           ],
