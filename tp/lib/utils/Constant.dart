@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Constant {
   static final USERNAME_PREF_KEY = "";
@@ -9,5 +10,6 @@ class Constant {
     if(text == null) return;
     final snackBar = SnackBar(content: Text(text), backgroundColor: Colors.red,);
     messengerKey.currentState!..removeCurrentSnackBar()..showSnackBar(snackBar);
+    Fluttertoast.showToast(msg: text);
   }
 }

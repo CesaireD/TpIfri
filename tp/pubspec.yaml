@@ -48,6 +48,8 @@ dependencies:
   email_validator:
   uuid:
   carousel_nullsafety:
+  fluttertoast:
+
 
 
 dev_dependencies:

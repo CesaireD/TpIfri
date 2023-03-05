@@ -120,11 +120,7 @@ class Utilisateur {
          */
       }
 
-      //List<Produit> pro = p.first.produit!;
-      //pro.add(product);
-      //Panier q = p.first;
-      //q.produit = pro;
-
+      return true;
 
     } on FirebaseException catch (e) {
       print(e);
