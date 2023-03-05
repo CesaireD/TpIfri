@@ -81,32 +81,45 @@ class Utilisateur {
 
   static Future ajouterAuPanier(Produit product, String id) async {
     try {
-
+      print("A-----${id}----------");
       await Panier.fetch(id);
-      List<Produit> prod = [];
-      Panier p;
-      if(Panier.panier == null){
+      //print("1----------${Panier.panier!.id}---------------");
+      //List<Produit> prod = [];
+      //Panier p;
+      /*if(Panier.panier == null){
         //q!.produit!.add(product);
-        prod.add(product);
-        p = Panier(produit: prod, commander: false, userId: id);
+        final ref = await FirebaseFirestore.instance.collection('panier')
+            .doc();
+            print("1----------${ref.id}---------------");
+        final doc = await FirebaseFirestore.instance.collection('panier')
+            .doc(ref.id).collection('produit').doc();
+        print("2-----------${doc.id}--------------");
+
+        //prod.add(product);
+        p = Panier(id: ref.id, commander: false, userId: id);
+        ref.set(p.toJson());
       }else{
-        p = Panier.panier!;
+        print("2-----------${Panier.panier!.id}--------------");
+        /*p = Panier.panier!;
         p.produit!.add(product);
+        await FirebaseFirestore.instance.collection('panier')
+            .doc(Panier.idP)
+            .delete();
+        final ref = await FirebaseFirestore.instance.collection('panier')
+            .doc()
+            .set(p.toJson());
         //prod = Panier.prod;
         //prod.add(product);
-      }
+
+         */
+      }*/
 
       //List<Produit> pro = p.first.produit!;
       //pro.add(product);
       //Panier q = p.first;
       //q.produit = pro;
 
-      await FirebaseFirestore.instance.collection('panier')
-          .doc(Panier.idP)
-          .delete();
-      final ref = await FirebaseFirestore.instance.collection('panier')
-          .doc()
-          .set(p.toJson());
+
     } on FirebaseException catch (e) {
       print(e);
     }

@@ -16,9 +16,10 @@ class Panier {
   static Panier? panier;
 
 
-  Panier({required this.produit, this.commander, this.id, this.userId});
+  Panier({this.produit, this.commander, this.id, this.userId});
 
   add() async {
+
     final docProduit = FirebaseFirestore.instance.collection('panier').doc();
     final prod = Panier(
       id: docProduit.id,
@@ -40,24 +41,31 @@ class Panier {
     return v;
   }*/
 
-  static Future<Stream<List<Panier>>> fetch(String idU) async {
-    var v = await FirebaseFirestore.instance.collection('panier').where("userid", isEqualTo: idU).snapshots().map((event) => event.docs.map((e) => Panier.fromJson(e.data())).toList());
-    v.forEach((element) {
-      element.forEach((element) {
+  static Future<void> fetch(String idU) async {
+    final v = await FirebaseFirestore.instance.collection('panier').where("userid", isEqualTo: idU).limit(1);///.snapshots()/*map((event) => event.docs*/.map((e) => Panier.fromJson(e.data()!));
+    /*v.forEach((element) {
+      //element.forEach((element) {
         prod = element.produit! ;
         prod.forEach((element) { totalPrix += (element.price * element.quantity);});
         idP = element.id!;
         panier = element;
-      });
+      //});
 
-    });
-    return v;
+    });*/
+    final snapshot = await v.get();
+    //if(snapshot.exists){
+      //panier = Panier.fromJson(snapshot.data()!);
+   // }
+    //panier = v.get()
+
+    print("R------${panier!.id},--------");
+    //return v;
   }
 
   Map<String,dynamic> toJson() => {
     'id' : id,
     'userid' : userId,
-    'produit' : produit,
+    //'produit' : produit as List<Produit>,
     'vendu' : commander,
 
   };
@@ -65,7 +73,7 @@ class Panier {
   static Panier fromJson(Map<String,dynamic> json) => Panier(
     id: json['id'],
     userId: json['userid'],
-    produit: json['produit'] as List<Produit>,
+    //produit: json['produit'] as List<Produit>,
     commander: json['vendu']
   );
   
