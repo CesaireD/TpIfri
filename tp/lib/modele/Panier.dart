@@ -58,13 +58,13 @@ class Panier {
       //ProdString p;
       panier = Panier.fromJson(snapshot.data()!);
       final w = FirebaseFirestore.instance.collection('panier').doc(idU).collection("produit").snapshots()
-          .map((snapshot) => snapshot.docs.map((doc) => ProdString.fromJson(doc.data())).toList());
+          .map((snapshot) => snapshot.docs.map((doc) => Produit.fromJson(doc.data())).toList());
       w.forEach((element) {
         element.forEach((element) async{
           print("1---//////////////////////////////////");
           print(element.id);
-          final pr = await Produit.fetchByID(element.id);
-          prod.add(pr!);
+          //final pr = await Produit.fetchByID(element.id);
+          prod.add(element);
 
         });
         //Produit.fetchByID(element.id);
