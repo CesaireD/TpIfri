@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tp/modele/User.dart';
+import 'package:tp/screens/update_profile.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -8,7 +10,6 @@ class Profile extends StatefulWidget {
 
 class _ProfilePageState extends State<Profile> {
   final user = FirebaseAuth.instance.currentUser!;
-
   String? _firstName ;
   String _lastName = '';
   String _email = '';
@@ -51,14 +52,19 @@ class _ProfilePageState extends State<Profile> {
             SizedBox(height: 20),
             ListTile(
               leading: Icon(Icons.person),
-              title: Text('Edit Profile'),
+              title: Text('Editer le Profile'),
+              trailing: Icon(Icons.navigate_next),
               onTap: () {
-                // TODO: navigate to edit profile page
+               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
+                 return Text("data");
+                 //EditProfilePage();
+               }));
               },
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.info),
+              trailing: Icon(Icons.navigate_next),
               title: Text('Bio'),
               subtitle: Text(_bio),
               onTap: () {
@@ -68,7 +74,8 @@ class _ProfilePageState extends State<Profile> {
             Divider(),
             ListTile(
               leading: Icon(Icons.lock),
-              title: Text('Change Password'),
+              trailing: Icon(Icons.navigate_next),
+              title: Text('Changer de mot de passe'),
               onTap: () {
                 // TODO: navigate to change password page
               },
@@ -76,7 +83,8 @@ class _ProfilePageState extends State<Profile> {
             Divider(),
             ListTile(
               leading: Icon(Icons.logout),
-              title: Text('Log Out'),
+              trailing: Icon(Icons.navigate_next),
+              title: Text('Se déconnecter'),
               onTap: () {
                 FirebaseAuth.instance.signOut();
               },

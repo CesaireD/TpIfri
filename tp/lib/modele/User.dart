@@ -8,7 +8,7 @@ import 'produit.dart';
 class Utilisateur {
 
   String id;
-  final String name;
+  late final String name;
   final String? picture;
   final String email;
   final String password;
