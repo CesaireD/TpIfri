@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:tp/helpers/common.dart';
 import '../modele/Panier.dart';
 import '../modele/produit.dart';
 import 'Commande.dart';
@@ -58,7 +59,7 @@ class _ProductRow extends State<ProductRow> {
   }
 
   void initState() {
-
+    ProdString.dispose();
     super.initState();
 
   }
@@ -73,8 +74,12 @@ class _ProductRow extends State<ProductRow> {
         itemCount: Panier.prod.length,
         itemBuilder: (_, index) {
           final produits = Panier.prod;
+          //top[index] = 1;
+          prix_total = produits[index].price;
           //total(produits[index].price);
-          prix_total += produits[index].price;
+          //prix_total += produits[index].price;
+          //print("---------------------$prix_total--");
+          //ProdString.prix = prix_total;
           return  Dismissible(
             key: UniqueKey(),
             direction: DismissDirection.horizontal,
@@ -134,8 +139,8 @@ class _ProductRow extends State<ProductRow> {
               children: <Widget>[
                 Column(children: [
                   Padding(padding: EdgeInsets.only(right:MediaQuery.of(context).size.width/10),
-                      child:  new Card(
-                        margin: EdgeInsets.only(left: 10),
+                      child:  Card(
+                        margin: const EdgeInsets.only(left: 10),
                         child: Image.network(
                         produits[index].picture,
                         fit: BoxFit.contain,
@@ -151,7 +156,7 @@ class _ProductRow extends State<ProductRow> {
                    Card(
                      color: Colors.white,
                      elevation: 0.0,
-                     margin: EdgeInsets.only(right: 5),
+                     margin: const EdgeInsets.only(right: 5),
                      child:  Text(
                        produits[index].name,
                        style: TextStyle(
@@ -161,7 +166,7 @@ class _ProductRow extends State<ProductRow> {
                      ),
                    ),
                     Text(
-                      "" + produits[index].price.toString() + " FCFA",
+                      " " + produits[index].price.toString() + " cfa",
                       style: TextStyle(
                           color: Colors.blue[700],
                           fontSize:  MediaQuery.of(context).size.width/18
@@ -176,15 +181,32 @@ class _ProductRow extends State<ProductRow> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           IconButton(
-                              onPressed: compte, icon: const Icon(Icons.add)),
+                              onPressed: /*compte*/(){
+
+                                setState(() {
+                                  top[index]++;
+                                  ProdString.prix = somme(ProdString.prix, prix_total) ;
+                                });
+                              },
+                              icon: const Icon(Icons.add)),
                           Text(
-                            val.toString(),
+                            //val.toString(),
+                            getTop(top[index]),
                             style: TextStyle(
                               fontSize: MediaQuery.of(context).size.width/20,
                             ),
                           ),
                           IconButton(
-                              onPressed: decompte,
+                              onPressed: /*decompte*/(){
+                                if(top[index] == 1){
+
+                                }else{
+                                  setState(() {
+                                    top[index]--;
+                                    ProdString.prix = somme(ProdString.prix, prix_total*(-1));
+                                  });
+                                }
+                              },
                               icon: const Icon(Icons.remove))
                         ],
                       ),
@@ -290,10 +312,17 @@ class _ProductRow extends State<ProductRow> {
 void onDelete(){
   //TODO fonction pour supprimer un produit du panier
 }
+somme(a,b) {return a+b;}
+div(a,b) { return ((a/b).round() * 100) / 100  ; }
+
+List<num> top = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+getTop(index){
+    return index.toString();
+}
 void onAddToFavorites(){
   //TODO pour ajouter aux favoris
 }
-var prix_total=0;
+num prix_total = 0;
 void total(int val) {
     prix_total+=val;
 }
@@ -532,7 +561,7 @@ Widget expanded_widget(int value){
                       color: Colors.grey[700],
                       fontSize: MediaQuery.of(context).size.width/19,
                     ),),
-                  Text("$prix_total FCA",
+                  Text("${getTop(somme(ProdString.prix, div(ProdString.prix, 999)))} FCA",
                     style: TextStyle(
                         color:Colors.blue[900],
                         fontSize: MediaQuery.of(context).size.width/15
@@ -544,9 +573,7 @@ Widget expanded_widget(int value){
                       backgroundColor: MaterialStateProperty.resolveWith((color) => Colors.blue[900])
                   ),
                   onPressed: (){
-                      Navigator.push(context,  MaterialPageRoute(builder: (BuildContext context){
-                        return Commande();
-                      }));
+                      changeScreen(context, CommandeRow(total: somme(ProdString.prix, div(ProdString.prix, 999)),totalSansTaxe: ProdString.prix!,tva: div(ProdString.prix, 999)));
                   },
                   child: Text("VERIFIER",style: TextStyle(
                     fontSize: MediaQuery.of(context).size.width/15,
@@ -576,33 +603,64 @@ Widget expanded_widget(int value){
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/1.5),
-                        child: Text("Sous total:",style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width/20,
-                          color: Colors.grey[700],
-                        ),),),
-                      Text("$prix_total",style: TextStyle(
-                        color: Colors.blue[900],
-                        fontSize: MediaQuery.of(context).size.width/20
-                      ),)
-                      ],
-                    ), Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width/1.29),
-                        child: Text("Impôt: ",style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width/20,
-                          color: Colors.grey[700],
-                        ),),),
-                        Text("$impot",style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width/20,
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Sous total:",
+                            style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width/20,
+                            color: Colors.grey[700],
+                          ),
+                          ),
+                        Text("${ProdString.prix}",style: TextStyle(
                           color: Colors.blue[900],
-                        ),),
-                      ],
+                          fontSize: MediaQuery.of(context).size.width/20
+                        ),)
+                        ],
+                      ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("TVA:",
+                            style: TextStyle(
+                              fontSize: MediaQuery.of(context).size.width/20,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                          Text(getTop(div(ProdString.prix, 999)),style: TextStyle(
+                              color: Colors.blue[900],
+                              fontSize: MediaQuery.of(context).size.width/20
+                          ),)
+                        ],
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("TOTAL:",
+                            style: TextStyle(
+                              fontSize: MediaQuery.of(context).size.width/20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[900],
+                            ),
+                          ),
+                          Text(getTop(somme(ProdString.prix, div(ProdString.prix, 999))),style: TextStyle(
+                              color: Colors.blueAccent,
+                              fontWeight: FontWeight.bold,
+                              fontSize: MediaQuery.of(context).size.width/18
+                          ),)
+                        ],
+                      ),
+                    ),
+
                   ],
                 ),
                 ElevatedButton(
@@ -610,7 +668,7 @@ Widget expanded_widget(int value){
                         backgroundColor: MaterialStateProperty.resolveWith((color) => Colors.blue[900])
                     ),
                     onPressed: (){
-                      //todo fonction de "verification"
+                      changeScreen(context, CommandeRow(total: somme(ProdString.prix, div(ProdString.prix, 999)),totalSansTaxe: ProdString.prix!,tva: div(ProdString.prix, 999)));
                     },
                     child: Text("VERIFIER",style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width/15,

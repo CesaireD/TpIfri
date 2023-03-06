@@ -81,10 +81,10 @@ class _ProductCardState extends State<ProductCard>{
 
                    */
                   TextSpan(
-                    text: '\${widget.product.price /100} cfa \t',
+                    text: '${widget.product.price /100} cfa \t',
                     style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  TextSpan(
+                  /*TextSpan(
                     text: widget.product.feature ? '' : "ON SALE",
 
                     style: const TextStyle(
@@ -92,6 +92,8 @@ class _ProductCardState extends State<ProductCard>{
                         fontWeight: FontWeight.w400,
                         color: Colors.red),
                   ),
+
+                   */
                 ], style: TextStyle(color: Colors.black)),
               )
             ],

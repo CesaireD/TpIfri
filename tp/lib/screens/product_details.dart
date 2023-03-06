@@ -132,7 +132,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
-                              '\$${widget.product!.price / 100}',
+                              '${widget.product!.price} cfa',
                               textAlign: TextAlign.end,
                               style: const TextStyle(
                                   color: Colors.white,

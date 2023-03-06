@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'Panier.dart';
+
 class Produit {
 
   String id;
@@ -97,6 +99,11 @@ class Produit {
 
 class ProdString {
   String id;
+  static num? prix = Panier.getTotal();
+  static dispose() {
+    prix = 0;
+    prix = Panier.getTotal();
+  }
   ProdString({required this.id});
   static ProdString fromJson(Map<String,dynamic> json) => ProdString(
       id: json['id']
