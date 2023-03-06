@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:kkiapay_flutter_sdk/kkiapay/app/app.dart';
 import 'package:tp/modele/produit.dart';
+import 'package:tp/screens/paiement.dart';
 import '../modele/Panier.dart';
 import 'Home.dart';
 
@@ -48,7 +50,9 @@ class _CommandeRow extends State<CommandeRow> {
                       backgroundColor: MaterialStateProperty.resolveWith((color) => Colors.blue[900])
                   ),
                   onPressed: (){
-
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
+                    return Paiement();
+                  }));
                   },
                   child: Text("VALIDER",style: TextStyle(
                     fontSize: MediaQuery.of(context).size.width/15,

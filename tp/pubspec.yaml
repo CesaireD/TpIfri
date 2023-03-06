@@ -49,6 +49,7 @@ dependencies:
   uuid:
   carousel_nullsafety:
   fluttertoast:
+  kkiapay_flutter_sdk:
 
 
 
