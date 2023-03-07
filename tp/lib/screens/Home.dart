@@ -77,6 +77,12 @@ class HomePageState extends State<HomePage>{
     }
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
 
 
   @override
@@ -234,7 +240,7 @@ class HomePageState extends State<HomePage>{
             ),
           ] 
         ),
-      ):(choix == 1? PanierPage():Profile()),
+      ):(choix == 1? ProductRow():Profile()),
     );
   }
   

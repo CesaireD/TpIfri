@@ -84,11 +84,13 @@ class LoginState extends State<Login>{
                           Container(
                             alignment: Alignment.center,
                             child: ClipOval(
-                              child: Image.network(
-                                'https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2Flogo.jpg?alt=media&token=8dd15a07-8b23-493c-81fa-ce0c8294be5a',
+                              child: Image.asset(
+                                "assets/logo.jpg",
+
+                               // 'https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2Flogo.jpg?alt=media&token=8dd15a07-8b23-493c-81fa-ce0c8294be5a',
                                 alignment: Alignment.center,
-                                height: 120,
-                                width: 120,
+                                height: double.infinity,
+                                width: double.infinity,
                                 fit: BoxFit.cover,
                               ),
                             ),

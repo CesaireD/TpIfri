@@ -195,7 +195,7 @@ class _ProfilePageState extends State<Profile> {
 
                           },
                         style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 40),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                         ),
                           child: const Text("ANNULER",style: TextStyle(
@@ -210,7 +210,7 @@ class _ProfilePageState extends State<Profile> {
                           },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.blue,
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                         ),
                           child: const Text("ENREGISTRER",style: TextStyle(

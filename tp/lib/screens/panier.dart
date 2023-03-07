@@ -7,7 +7,7 @@ import '../modele/produit.dart';
 import 'Commande.dart';
 import '../modele/produit.dart';
 import 'Home.dart';
-
+/*
 class PanierPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class PanierPage extends StatelessWidget {
     );
   }
 }
-
+*/
 class ProductRow extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _ProductRow();
@@ -51,12 +51,16 @@ class _ProductRow extends State<ProductRow> {
   List<Produit?> l =[];
   List<Produit>? produit;
 
-  void initState() async {
-    ProdString.dispose();
+  ok() async {
     await Panier.dispose();
+  }
+  @override
+  void initState() {
+    ProdString.dispose();
+    //ok();
+    Panier.dispose();
     Panier.fetch(FirebaseAuth.instance.currentUser!.uid);
     super.initState();
-
   }
   Widget show_list_produit() {
     print("+--------------------------------------------------------------------");
