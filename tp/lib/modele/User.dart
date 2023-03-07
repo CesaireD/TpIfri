@@ -8,14 +8,14 @@ import 'produit.dart';
 class Utilisateur {
 
   String id;
-  final String? name;
-  final String? picture;
-  final String email;
-  final String password;
-  final String? tel;
-  final int? totalAchat;
+  String? name = "";
+  String? picture;
+  String email ="";
+  String password;
+  String? tel="";
+  int? totalAchat;
   final int? totalPrix;
-  final String? adresse;
+  String? adresse ="";
   final date;
   static Utilisateur? user;
 

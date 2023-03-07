@@ -18,12 +18,24 @@ class Profile extends StatefulWidget {
 class _ProfilePageState extends State<Profile> {
   File? pickedFile;
   ImagePicker imagePicker = ImagePicker();
-  void initState() async {
+  ok()async {
     await Utilisateur.fetchByEmail(FirebaseAuth.instance.currentUser!.email.toString());
+
+  }
+  @override
+  void initState() {
+    ok();
+     user = Utilisateur.user;
+    //_name=user!.name! == null ? "" : user!.name!;
+    //_email=user!.email == null? "" : user!.email;
+    //_phone=user!.tel! == null?  "": user!.tel!;
+    //_password=user!.password;
+    //_adresse = user!.adresse! ?? "";
+     print(user);
     super.initState();
   }
-  final user = Utilisateur.user!;
-  String? _password ;
+  Utilisateur? user;
+  String? _password = '';
   String _name = '';
   String _email = '';
   String _phone="" ;//= '+1 555-123-4567';
@@ -113,11 +125,7 @@ class _ProfilePageState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    _name=user.name! ?? "";
-    _email=user.email;
-    _phone=user.tel! ?? "";
-    _password=user.password;
-    _adresse = user.adresse! ?? "";
+
 
     return Scaffold(
       appBar: AppBar(
@@ -143,9 +151,10 @@ class _ProfilePageState extends State<Profile> {
                               BoxShadow(spreadRadius: 2,blurRadius: 10,color: black.withOpacity(0.1))
                             ],
                             shape: BoxShape.circle,
-                            image: const DecorationImage(
+                            image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2F10.png?alt=media&token=e310a71e-4622-4ed3-b9e8-35bd60d551e6"),
+                              image:
+                              NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2F10.png?alt=media&token=e310a71e-4622-4ed3-b9e8-35bd60d551e6"),
                             )
                           ),
                         ),
@@ -186,7 +195,7 @@ class _ProfilePageState extends State<Profile> {
 
                           },
                         style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 50),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                         ),
                           child: const Text("ANNULER",style: TextStyle(
@@ -201,7 +210,7 @@ class _ProfilePageState extends State<Profile> {
                           },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.blue,
-                          padding: const EdgeInsets.symmetric(horizontal: 50),
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                         ),
                           child: const Text("ENREGISTRER",style: TextStyle(
