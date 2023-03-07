@@ -89,8 +89,8 @@ class LoginState extends State<Login>{
 
                                // 'https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2Flogo.jpg?alt=media&token=8dd15a07-8b23-493c-81fa-ce0c8294be5a',
                                 alignment: Alignment.center,
-                                height: double.infinity,
-                                width: double.infinity,
+                                height: 320,
+                                width: 320,
                                 fit: BoxFit.cover,
                               ),
                             ),
