@@ -99,6 +99,10 @@ class Produit {
 
 class ProdString {
   String id;
+  static String name="";
+  static int amount=0;
+  static String  e_mail="";
+  static String phone="";
   static num? prix = Panier.getTotal();
   static dispose() {
     prix = 0;

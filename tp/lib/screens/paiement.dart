@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kkiapay_flutter_sdk/kkiapay/view/widget_builder_view.dart';
 import 'package:kkiapay_flutter_sdk/utils/kkiapayConf.sample.dart';
+import 'package:tp/modele/produit.dart';
 
 import './successScreen.dart';
 
@@ -17,10 +18,10 @@ void successCallback(response, context) {
     ),
   );
 }
-final String name="";
-final int amount=0;
-final String  e_mail="";
-final String phone="";
+final String name=ProdString.name ?? "A";
+final int amount=ProdString.amount ?? 1;
+final String  e_mail=ProdString.e_mail ?? "exemple@gmail.com";
+final String phone=ProdString.phone ?? "62884877";
 
 final kkiapay = KKiaPay(
   amount: amount,

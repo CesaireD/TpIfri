@@ -1,5 +1,10 @@
+
+
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tp/modele/User.dart';
 import 'package:tp/screens/update_profile.dart';
 
@@ -11,6 +16,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<Profile> {
+  File? pickedFile;
+  ImagePicker imagePicker = ImagePicker();
   void initState() async {
     await Utilisateur.fetchByEmail(FirebaseAuth.instance.currentUser!.email.toString());
     super.initState();
@@ -65,7 +72,7 @@ class _ProfilePageState extends State<Profile> {
             children: [
               InkWell(
                 onTap: () {
-
+                  takePhoto(ImageSource.gallery);
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -83,7 +90,7 @@ class _ProfilePageState extends State<Profile> {
               const SizedBox(width: 80,),
               InkWell(
                 onTap: () {
-
+                  takePhoto(ImageSource.camera);
                 },
                 child: Column(
                   children: const [
@@ -210,5 +217,10 @@ class _ProfilePageState extends State<Profile> {
             ),
       ),
     );
+  }
+
+  void takePhoto(ImageSource source) async {
+    final pickedImage = await imagePicker.pickImage(source: source, imageQuality: 100);
+    pickedFile = File(pickedImage!.path);
   }
 }

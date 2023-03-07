@@ -59,9 +59,6 @@ class _ProductRow extends State<ProductRow> {
 
   }
   Widget show_list_produit() {
-
-    //print("+--------------------------------------------------------------------");
-    //print("l ${l.length}");
     print("+--------------------------------------------------------------------");
     print("Nombre de produit dans le panier :${Panier.prod.length}");
    return ListView.builder(

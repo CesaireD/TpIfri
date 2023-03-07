@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:kkiapay_flutter_sdk/kkiapay/app/app.dart';
+import 'package:tp/modele/User.dart';
 import 'package:tp/modele/produit.dart';
 import 'package:tp/screens/paiement.dart';
 import '../modele/Panier.dart';
@@ -49,7 +51,14 @@ class _CommandeRow extends State<CommandeRow> {
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.resolveWith((color) => Colors.blue[900])
                   ),
-                  onPressed: (){
+                  onPressed: ()async {
+                    final mail = await FirebaseAuth.instance.currentUser!.email;
+                    await Utilisateur.fetchByEmail(mail.toString());
+                    final user = Utilisateur.user;
+                    ProdString.name = user!.name!;
+                    ProdString.e_mail = user.email;
+                    ProdString.phone = user.tel!;
+                    ProdString.amount = widget.total.toInt();
                   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
                     return Paiement();
                   }));
