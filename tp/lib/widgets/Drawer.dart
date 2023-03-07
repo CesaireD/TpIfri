@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tp/helpers/common.dart';
+import 'package:tp/screens/profile.dart';
 
+import '../helpers/style.dart';
 import '../screens/VoirTous.dart';
 
 
@@ -27,9 +30,25 @@ class DrawerState extends State<Draweer>{
         padding: EdgeInsets.only(bottom: 24,top: 24 +MediaQuery.of(context).padding.top),
         child: Column(
           children: [
-            const CircleAvatar(
+            /*const CircleAvatar(
               radius: 52,
               backgroundImage: NetworkImage(''),
+            ),*/
+            Container(
+              width: 130,
+              height: 130,
+              decoration: BoxDecoration(
+                  border: Border.all(width: 4, color: white),
+                  boxShadow: [
+                    BoxShadow(spreadRadius: 2,blurRadius: 10,color: black.withOpacity(0.1))
+                  ],
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image:
+                    NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2F10.png?alt=media&token=e310a71e-4622-4ed3-b9e8-35bd60d551e6"),
+                  )
+              ),
             ),
             //Text(user.displayName! == "" ? "":user.displayName!, style: const TextStyle(fontSize: 28, color: Colors.white),),
             const SizedBox(height: 12,),
@@ -54,26 +73,14 @@ class DrawerState extends State<Draweer>{
         ),
         ListTile(
           leading: const Icon(Icons.home_outlined),
-          title: const Text('Home'),
+          title: const Text('Profile'),
           onTap: () {
-
+              changeScreen(context, Profile());
           },
         ),
-        ListTile(
-          leading: const Icon(Icons.home_outlined),
-          title: const Text('Home'),
-          onTap: () {
 
-          },
-        ),
         const Divider(color: Colors.black54,),
-        ListTile(
-          leading: const Icon(Icons.home_outlined),
-          title: const Text('Home'),
-          onTap: () {
 
-          },
-        ),
         ListTile(
           leading: const Icon(Icons.logout_outlined),
           title: const Text('Se deconnecter'),

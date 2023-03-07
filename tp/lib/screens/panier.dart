@@ -58,7 +58,7 @@ class _ProductRow extends State<ProductRow> {
   void initState() {
     ProdString.dispose();
     //ok();
-    Panier.dispose();
+    //Panier.dispose();
     Panier.fetch(FirebaseAuth.instance.currentUser!.uid);
     super.initState();
   }

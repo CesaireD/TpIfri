@@ -36,7 +36,6 @@ class SearchState extends State<Search>{
             ),
             title: TextField(
               textInputAction: TextInputAction.search,
-              autofocus: true,
               onSubmitted: (pattern){
                 changeScreen(context, const ProductSearchScreen());
               },
