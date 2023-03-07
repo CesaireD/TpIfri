@@ -17,13 +17,17 @@ void successCallback(response, context) {
     ),
   );
 }
+final String name="";
+final int amount=0;
+final String  e_mail="";
+final String phone="";
 
 final kkiapay = KKiaPay(
-  amount: 1000,
+  amount: amount,
   countries: ["BJ"],
-  phone: "22961000000",
-  name: "Thibaut",
-  email: "thibautdegbetchi@gmail.com",
+  phone: phone,
+  name: name,
+  email: e_mail,
   reason: 'transaction reason',
   data: 'Fake data',
   sandbox: true,
@@ -35,6 +39,7 @@ final kkiapay = KKiaPay(
 );
 
 class Paiement extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
