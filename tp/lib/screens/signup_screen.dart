@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:tp/screens/signup_screen.dart';
 import '../main.dart';
 import '../modele/Authentification.dart';
+import '../modele/User.dart';
 import 'Login.dart';
 import '../utils/Constant.dart';
 class SignUpScreen extends StatefulWidget {
@@ -180,7 +182,11 @@ class InitState extends State<SignUpScreen> {
                     if (!isLoading && formKey.currentState!.validate()) {
                      // await _signup(emailController.text,passwordController.text);
                       print('+++++++++++on++++++++++++++');
-                      await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
+                      final res = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
+
+                      final u = Utilisateur(id: res.user!.uid,email: emailController.text.trim(),password: passwordController.text.trim());
+                      u.add();
+                      //final doc = FirebaseFirestore.instance.collection('user').
                       print('+++++++++++on++++++++++++++');
                     }else{
                       print('++++++++++++off+++++++++++++');

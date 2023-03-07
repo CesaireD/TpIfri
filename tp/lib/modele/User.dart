@@ -8,24 +8,25 @@ import 'produit.dart';
 class Utilisateur {
 
   String id;
-  late final String name;
+  final String? name;
   final String? picture;
   final String email;
   final String password;
-  final int? tel;
+  final String? tel;
   final int? totalAchat;
   final int? totalPrix;
+  final String? adresse;
   final date;
-  final List<Produit?> produits;
+  static Utilisateur? user;
 
-  Utilisateur({this.id = '',required this.name,this.picture,required this.email,required this.password,this.totalAchat,this.tel, this.totalPrix,this.date, required this.produits});
+  Utilisateur({this.id = '',this.name,this.picture,required this.email,required this.password,this.adresse,this.totalAchat,this.tel, this.totalPrix,this.date});
 
 
   add() async {
-    final docUser = FirebaseFirestore.instance.collection('users').doc();
+    final docUser = FirebaseFirestore.instance.collection('user').doc(id);
 
     final prod = Utilisateur(
-      id: docUser.id,
+      id: id,
       name: name,
       picture: picture,
       email: email,
@@ -34,7 +35,6 @@ class Utilisateur {
       totalAchat: totalAchat,
       totalPrix: totalPrix,
       date: date,
-      produits: produits,
     );
     final json = prod.toJson();
     await docUser.set(json);
@@ -49,6 +49,7 @@ class Utilisateur {
     final docUser = FirebaseFirestore.instance.collection('user').doc(email);
     final snapshot = await docUser.get();
     if(snapshot.exists){
+      user = Utilisateur.fromJson(snapshot.data()!);
       return Utilisateur.fromJson(snapshot.data()!);
     }
   }
@@ -63,7 +64,6 @@ class Utilisateur {
     'totalAchat' : totalAchat,
     'totalPrix' : totalPrix,
     'date' : date,
-    'produits' : produits
   };
 
   static Utilisateur fromJson(Map<String,dynamic> json) => Utilisateur(
@@ -76,7 +76,6 @@ class Utilisateur {
     totalAchat: json['totalAchat'],
     totalPrix: json['totalPrix'],
     date: (json['date'] as Timestamp).toDate(),
-    produits: json['produits'] as List<Produit>
   );
 
   static Future ajouterAuPanier(Produit product, String id) async {

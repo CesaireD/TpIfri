@@ -42,16 +42,8 @@ class Panier {
 
 
   static Future<void> fetch(String idU) async {
+    //dispose();
     final v = await FirebaseFirestore.instance.collection('panier').doc(idU);
-    /*v.forEach((element) {
-      //element.forEach((element) {
-        prod = element.produit! ;
-        prod.forEach((element) { totalPrix += (element.price * element.quantity);});
-        idP = element.id!;
-        panier = element;
-      //});
-
-    });*/
     final snapshot = await v.get();
     if(snapshot.exists){
       //ProdString p;
@@ -62,15 +54,13 @@ class Panier {
         element.forEach((element) async{
           print("1---//////////////////////////////////");
           print(element.id);
-          //final pr = await Produit.fetchByID(element.id);
           prod.add(element);
-
         });
         //Produit.fetchByID(element.id);
       });
       print("R------${panier!.id},--------");
     }else{
-      print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
+      print('1....');
     }
     //panier = v.get()
 
@@ -78,14 +68,14 @@ class Panier {
   }
 
   static dispose() {
-    prod.clear();
+    prod = [];
     panier = null;
+    totalPrix = 0;
   }
 
   Map<String,dynamic> toJson() => {
     'id' : id,
     'userid' : userId,
-    //'produit' : produit as List<Produit>,
     'vendu' : commander,
 
   };

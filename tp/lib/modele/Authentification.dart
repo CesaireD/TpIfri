@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 class Authentification{
 
@@ -9,7 +10,6 @@ class Authentification{
   }
 
   static Future<UserCredential> signUp(String email, String password) async {
-    print('-------------------------------');
     return await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password.trim()

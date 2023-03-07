@@ -51,15 +51,10 @@ class _ProductRow extends State<ProductRow> {
   List<Produit?> l =[];
   List<Produit>? produit;
 
-  _ok() async{
-    await Panier.fetch(FirebaseAuth.instance.currentUser!.uid);
-    produit = Panier.prod;
-        taille = Panier.prod.length;
-
-  }
-
-  void initState() {
+  void initState() async {
     ProdString.dispose();
+    await Panier.dispose();
+    Panier.fetch(FirebaseAuth.instance.currentUser!.uid);
     super.initState();
 
   }
@@ -74,12 +69,7 @@ class _ProductRow extends State<ProductRow> {
         itemCount: Panier.prod.length,
         itemBuilder: (_, index) {
           final produits = Panier.prod;
-          //top[index] = 1;
           prix_total = produits[index].price;
-          //total(produits[index].price);
-          //prix_total += produits[index].price;
-          //print("---------------------$prix_total--");
-          //ProdString.prix = prix_total;
           return  Dismissible(
             key: UniqueKey(),
             direction: DismissDirection.horizontal,
@@ -217,97 +207,6 @@ class _ProductRow extends State<ProductRow> {
             ),
           );
         });
-    /*l.forEach((element) {
-      Row row = Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-            Dismissible(
-              key: UniqueKey(),
-              direction: DismissDirection.horizontal,
-              onDismissed: (direction) {
-              // Appeler ici la fonction pour supprimer l'élément
-              if(direction==DismissDirection.startToEnd){
-              onAddToFavorites();
-              }else{
-              onDelete();
-              }
-              setState(() {
-
-              });
-
-              },
-              secondaryBackground:  Container(
-                alignment: Alignment.centerRight,
-                color: Colors.deepOrange[600],
-                child: Icon(Icons.delete,
-                size: MediaQuery.of(context).size.width/7,),
-                ),
-              background:  Container(
-                alignment: Alignment.centerLeft,
-                color: Colors.yellow[500],
-                child: Icon(Icons.star,
-                size: MediaQuery.of(context).size.width/7,),
-              ),
-              child:  Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-              Column(children: [
-              Image.network(
-              element!.picture,
-              fit: BoxFit.cover,
-              height: 150,
-              width: 150,
-              )
-              ]),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                Text(
-                element!.name,
-                style: TextStyle(
-                fontSize:  MediaQuery.of(context).size.width/20,
-                fontWeight: FontWeight.bold,
-                ),
-                ),
-                Text(
-                "" + element!.price.toString() + " FCFA",
-                style: TextStyle(
-                color: Colors.blue[700],
-                fontSize:  MediaQuery.of(context).size.width/18
-                ),
-                ),
-                Card(
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  color: Colors.grey[300],
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                    IconButton(
-                    onPressed: compte, icon: const Icon(Icons.add)),
-                    Text(
-                    val.toString(),
-                      style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width/20,),
-                    ),
-                    IconButton(
-                    onPressed: decompte,
-                    icon: const Icon(Icons.remove))
-                    ],
-                  ),
-                )
-              ],
-              )
-              ],
-              ),
-            )
-        ],
-      );
-      list_r.add(row);
-    });*/
   }
 void onDelete(){
   //TODO fonction pour supprimer un produit du panier
@@ -327,14 +226,7 @@ void total(int val) {
     prix_total+=val;
 }
   Widget affiche_produit() {
-    return /*StreamBuilder<List<Produit>>(
-        stream: produit!,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          } else if (snapshot.hasData) {
-            final produits = snapshot.data!;
-            return */ListView.builder(
+    return ListView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: Panier.prod.length,
                 itemBuilder: (_, index) {
@@ -457,75 +349,6 @@ void total(int val) {
         //});
   }
 
-  /*Widget affiche_produit() {
-    return StreamBuilder<List<Produit>>(
-        stream: Produit.fetch(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          } else if (snapshot.hasData) {
-            final produits = snapshot.data!;
-            return ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: produits.length,
-                itemBuilder: (_, index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      new Column(children: [
-                        new Image.network(
-                          produits[index].picture,
-                          fit: BoxFit.cover,
-                          height: 150,
-                          width: 150,
-                        )
-                      ]),
-                      new Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          new Text(
-                            produits[index].name,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          new Text(
-                            "" + produits[index].price.toString() + " FCFA",
-                            style: TextStyle(
-                              color: Colors.blue[700],
-                            ),
-                          ),
-                          new Card(
-                            color: Colors.grey[300],
-                            child: new Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                new IconButton(
-                                    onPressed: compte, icon: Icon(Icons.add)),
-                                new Text(
-                                  val.toString(),
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                new IconButton(
-                                    onPressed: decompte,
-                                    icon: Icon(Icons.remove))
-                              ],
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  );
-                });
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        });
-  }*/
 
   void retour() {
     Navigator.pop(context);

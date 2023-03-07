@@ -12,7 +12,6 @@ class ProductSearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<Produit>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -21,7 +20,7 @@ class ProductSearchScreen extends StatelessWidget {
         leading: IconButton(icon: const Icon(Icons.close), onPressed: (){
           Navigator.pop(context);
         }),
-        title: CustomText(text: "Products", size: 20,),
+        title: CustomText(text: "Produits", size: 20,),
         elevation: 0.0,
         centerTitle: true,
         actions: <Widget>[

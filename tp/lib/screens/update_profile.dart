@@ -21,16 +21,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Modifier le profil'),
+        title: const Text('Modifier le profil'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: ListView(
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Nom d\'utilisateur',
                 ),
                 validator: (value) {
@@ -40,11 +40,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   return null;
                 },
                 onSaved: (value) {
-                  widget.user.name = value!;
+                 // widget.user.name = value!;
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Adresse e-mail',
                 ),
                 validator: (value) {
@@ -58,7 +58,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Mot de passe',
                 ),
                 obscureText: true,
@@ -73,7 +73,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Bio',
                 ),
                 validator: (value) {
@@ -94,7 +94,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     Navigator.pop(context);
                   }
                 },
-                child: Text('Enregistrer'),
+                child: const Text('Enregistrer'),
               ),
             ],
           ),

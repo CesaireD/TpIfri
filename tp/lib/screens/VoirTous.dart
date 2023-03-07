@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
+import '../helpers/style.dart';
 import '../modele/produit.dart';
-import '../widgets/featured_card.dart';
+import '../widgets/custom_text.dart';
 import '../widgets/product_card.dart';
 
 class VoirTous extends StatefulWidget{
@@ -14,58 +14,36 @@ class VoirTous extends StatefulWidget{
 }
 class VoirTousState extends State<VoirTous>{
 
-  /*Widget buildProduct() => SliverToBoxAdapter(
-    child: StreamBuilder<List<Produit>>(
-        stream: Produit.fetch(),
-        builder: (context, snapshot) {
-          if(snapshot.hasError){
-            return const Text('');
-          }else if(snapshot.hasData){
-            final produits = snapshot.data!;
-            return GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                itemCount: 1,
-                itemBuilder: (_, index)
-                {
-                  return ;//FeaturedCard(produit: produits[index]);
-                }
-            );
-          }else{
-            return const Center(child: CircularProgressIndicator());
-          }
-        }
-    ),
-  );*/
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Column(
-        children: Produit.list.map((e) => GestureDetector(
-          child: ProductCard(product: e),
-        )
-        ).toList()
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: black),
+        backgroundColor: white,
+        leading: IconButton(icon: const Icon(Icons.close), onPressed: (){
+          Navigator.pop(context);
+        }),
+        title: CustomText(text: "Nos produits", size: 20,),
+        elevation: 0.0,
+        centerTitle: true,
+      ),
+      body: ListView(
+        children: [
+          Container(
+            padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+            margin: const EdgeInsets.all(10.0),
+            child: Column(
+                children: Produit.list.map((e) => GestureDetector(
+                  child: ProductCard(product: e),
+                )
+                ).toList()
+            ),
+          )
+        ]
+      ),
     );
 
-
-
-      /*CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          title: const Text('Nos produits'),
-          leading: const Icon(Icons.arrow_back),
-          floating: true,
-          actions: [
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.search)
-            )
-          ],
-        ),
-        buildProduct(),
-      ],
-    );
-
-       */
   }
   
 }
