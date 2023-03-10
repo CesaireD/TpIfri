@@ -84,8 +84,6 @@ class Utilisateur {
 
       Panier.dispose();
       await Panier.fetch(id);
-      //print("1----------${Panier.panier!.id}---------------");
-      //List<Produit> prod = [];
       Panier p;
       if(Panier.panier == null){
         print("1---------------------------------");
@@ -105,18 +103,7 @@ class Utilisateur {
         final doc = await FirebaseFirestore.instance.collection('panier')
             .doc(id).collection('produit').doc(product.id);
         doc.set(product.toJson());
-        /*p = Panier.panier!;
-        p.produit!.add(product);
-        await FirebaseFirestore.instance.collection('panier')
-            .doc(Panier.idP)
-            .delete();
-        final ref = await FirebaseFirestore.instance.collection('panier')
-            .doc()
-            .set(p.toJson());
-        //prod = Panier.prod;
-        //prod.add(product);
 
-         */
       }
 
       return true;

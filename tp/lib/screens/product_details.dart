@@ -232,11 +232,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                               final id = FirebaseAuth.instance.currentUser!.uid;
                               app.changeIsLoading();
                               bool success = await Utilisateur.ajouterAuPanier(widget.product!, id);
+                              print("----------------------------------------------------------------");
                               if (success) {
                                 Constant.showSnackBar("Ajouter avec succes");
-                                //_key.currentState.showSnackBar(SnackBar(content: Text("Added to Cart!")));
-                                //userProvider.reloadUserModel();
                                 app.changeIsLoading();
+                                print("----------------------------------------------------------------");
                                 return;
                               } else {
                                 Constant.showSnackBar("Echec ...");
@@ -245,6 +245,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 app.changeIsLoading();
                                 return;
                               }
+
                             },
                             minWidth: MediaQuery.of(context).size.width,
                             child: AppProvider.isLoading1

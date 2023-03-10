@@ -139,8 +139,8 @@ class _ProfilePageState extends State<Profile> {
                     child: Stack(
                       children: [
                         Container(
-                          width: 130,
-                          height: 130,
+                          width: 140,
+                          height: 140,
                           decoration: BoxDecoration(
                             border: Border.all(width: 4, color: white),
                             boxShadow: [
@@ -150,8 +150,8 @@ class _ProfilePageState extends State<Profile> {
                             image: DecorationImage(
                               fit: BoxFit.cover,
                               image: photo == null 
-                                  ? NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2Flogo.jpg?alt=media&token=71396168-cb49-4569-bc68-86865480f6d4")
-                                  : NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2F10.png?alt=media&token=e310a71e-4622-4ed3-b9e8-35bd60d551e6"),
+                                  ? const NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2Flogo.jpg?alt=media&token=71396168-cb49-4569-bc68-86865480f6d4")
+                                  : NetworkImage(photo!),
                             )
                           ),
                         ),
