@@ -63,11 +63,11 @@ class InitState extends State<SignUpScreen> {
           height: 250,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90)),
-            color: Color.fromARGB(242, 247, 247, 248),
+            color: Color.fromARGB(239, 236, 237, 240),
             gradient: LinearGradient(
               colors: [
-                (Color.fromARGB(253, 249, 249, 250)),
-                Color.fromARGB(255, 255, 255, 255)
+                (Color.fromRGBO(236, 238, 241, 1)),
+                Color.fromARGB(255, 237, 240, 243)
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -82,10 +82,11 @@ class InitState extends State<SignUpScreen> {
                 alignment: Alignment.center,
                 child: ClipOval(
                   child: Image.asset(
-                    'https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2Flogo.jpg?alt=media&token=8dd15a07-8b23-493c-81fa-ce0c8294be5a',
+                    "assets/logo.jpg",
+                    //'https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2Flogo.jpg?alt=media&token=8dd15a07-8b23-493c-81fa-ce0c8294be5a',
                     alignment: Alignment.center,
-                    height: 120,
-                    width: 120,
+                    height: 200,
+                    width: 200,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -95,7 +96,7 @@ class InitState extends State<SignUpScreen> {
                 alignment: Alignment.bottomRight,
                 child: const Text(
                   "S'inscrire",
-                  style: TextStyle(fontSize: 20, color: Colors.white),
+                  style: TextStyle(fontSize: 25, color: Colors.white),
                 ),
               )
             ],
@@ -105,7 +106,7 @@ class InitState extends State<SignUpScreen> {
         Form(
             key: formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   alignment: Alignment.center,
@@ -115,6 +116,7 @@ class InitState extends State<SignUpScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.grey[200],
+
                     boxShadow: const [
                       BoxShadow(
                           offset: Offset(0, 10),
@@ -126,10 +128,10 @@ class InitState extends State<SignUpScreen> {
                     controller: nameController,
                     keyboardType: TextInputType.name,
                     decoration: const InputDecoration(
-                        hintText: "Entrez votre nom",
+                        hintText: "Nom&Prenoms",
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
-                        //icon: Icon(Icons.email, color: Color.fromARGB(255, 49, 98, 231),)
+                        icon: Icon(Icons.person, color: Color.fromARGB(255, 49, 98, 231),)
                     ),
                     textInputAction: TextInputAction.next,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -139,7 +141,7 @@ class InitState extends State<SignUpScreen> {
                 ),
                 Container(
                   alignment: Alignment.center,
-                  margin: const EdgeInsets.only(left: 20, right: 20, top: 70),
+                  margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   height: 54,
                   decoration: BoxDecoration(
@@ -156,10 +158,10 @@ class InitState extends State<SignUpScreen> {
                     controller: phonController,
                     keyboardType: TextInputType.phone,
                     decoration: const InputDecoration(
-                        hintText: " Entrez votre numéro de téléphone",
+                        hintText: "Telephone",
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
-                        //icon: Icon(Icons.email, color: Color.fromARGB(255, 49, 98, 231),)
+                        icon: Icon(Icons.phone, color: Color.fromARGB(255, 49, 98, 231),)
                     ),
                     textInputAction: TextInputAction.next,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -169,7 +171,7 @@ class InitState extends State<SignUpScreen> {
                 ),
                 Container(
                   alignment: Alignment.center,
-                  margin: const EdgeInsets.only(left: 20, right: 20, top: 70),
+                  margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   height: 54,
                   decoration: BoxDecoration(
@@ -186,7 +188,7 @@ class InitState extends State<SignUpScreen> {
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
-                        hintText: "Entrez votre e-mail",
+                        hintText: "Email",
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
                         icon: Icon(Icons.email, color: Color.fromARGB(255, 49, 98, 231),)
@@ -220,7 +222,7 @@ class InitState extends State<SignUpScreen> {
                       focusColor: const Color.fromARGB(255, 49, 98, 231),
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
-                      hintText: "Entrez votre mot de passe",
+                      hintText: "Mot de passe",
                       labelText: "Mot de passe",
                       icon: const Icon(Icons.vpn_key, color: Color.fromARGB(255, 49, 98, 231),),
                       suffixIcon: IconButton(
@@ -248,7 +250,7 @@ class InitState extends State<SignUpScreen> {
                       print('+++++++++++on++++++++++++++');
                       final res = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
 
-                      final u = Utilisateur(id: res.user!.uid,email: emailController.text.trim(),password: passwordController.text.trim());
+                      final u = Utilisateur(id: res.user!.uid,email: emailController.text.trim(),password: passwordController.text.trim(),name: nameController.text.trim(),tel: phonController.text.trim(),);
                       u.add();
                       //final doc = FirebaseFirestore.instance.collection('user').
                       print('+++++++++++on++++++++++++++');

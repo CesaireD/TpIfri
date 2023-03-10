@@ -28,11 +28,12 @@ class LoginState extends State<Login>{
 
   bool isLoading = false;
   _login(email, password) async {
+    isLoading ?
     showDialog(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (context) => const Center(child: CircularProgressIndicator(),)
-    );
+    ) : null ;
     try{
 
       await Authentification.signIn(email, password);
@@ -44,6 +45,10 @@ class LoginState extends State<Login>{
       print('\n\naaa\n\n');
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
     } on FirebaseAuthException catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      Constant.showSnackBar(e.toString());
       print(e);
     }
     
@@ -89,8 +94,8 @@ class LoginState extends State<Login>{
 
                                // 'https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2Flogo.jpg?alt=media&token=8dd15a07-8b23-493c-81fa-ce0c8294be5a',
                                 alignment: Alignment.center,
-                                height: 320,
-                                width: 320,
+                                height: 200,
+                                width: 200,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -100,7 +105,7 @@ class LoginState extends State<Login>{
                             alignment: Alignment.bottomRight,
                             child: const Text(
                               "Login",
-                              style: TextStyle(fontSize: 20, color: Colors.white),
+                              style: TextStyle(fontSize: 25, color: Colors.white),
                             ),
                           )
                         ],
