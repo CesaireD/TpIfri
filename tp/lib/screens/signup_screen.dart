@@ -134,8 +134,7 @@ class InitState extends State<SignUpScreen> {
                         icon: Icon(Icons.person, color: Color.fromARGB(255, 49, 98, 231),)
                     ),
                     textInputAction: TextInputAction.next,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (name) => name != null && !EmailValidator.validate(name) ? "Champs obligatoire" : null,
+                    validator: (name) => name == null || name == "" ? "Champs obligatoire" : null,
                     cursorColor: const Color.fromARGB(255, 49, 98, 231),
                   ),
                 ),
@@ -164,7 +163,7 @@ class InitState extends State<SignUpScreen> {
                         icon: Icon(Icons.phone, color: Color.fromARGB(255, 49, 98, 231),)
                     ),
                     textInputAction: TextInputAction.next,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (name) => name == null || name == "" ? "Champs obligatoire" : null,
                     //validator: (phone) => phone != null && !EmailValidator.validate(phone) ? "cHAMPS VIDE" : null,
                     cursorColor: const Color.fromARGB(255, 49, 98, 231),
                   ),
@@ -250,8 +249,9 @@ class InitState extends State<SignUpScreen> {
                       print('+++++++++++on++++++++++++++');
                       final res = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
 
-                      final u = Utilisateur(id: res.user!.uid,email: emailController.text.trim(),password: passwordController.text.trim(),name: nameController.text.trim(),tel: phonController.text.trim(),);
+                      final u = Utilisateur(id: res.user!.uid,email: emailController.text.trim(),password: passwordController.text.trim(),name: nameController.text.trim(),tel: phonController.text.trim(),date: DateTime.now());
                       u.add();
+                      Constant.showSnackBar("Compte cree avec succes");
                       //final doc = FirebaseFirestore.instance.collection('user').
                       print('+++++++++++on++++++++++++++');
                     }else{

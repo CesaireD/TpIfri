@@ -16,51 +16,47 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<Profile> {
+
   File? pickedFile;
   ImagePicker imagePicker = ImagePicker();
   ok()async {
-    await Utilisateur.fetchByEmail(FirebaseAuth.instance.currentUser!.email.toString());
-
+    final a = await Utilisateur.fetchByEmail(FirebaseAuth.instance.currentUser!.uid);
+    user = Utilisateur.user;
+    _name.text= user!.name!;
+    _email.text=user!.email;
+    _phone.text= user!.tel!;
+    _password.text=user!.password;
+    _adresse.text = user!.adresse ?? "";
+    photo = user!.picture;
+    print(user!.name);
   }
   @override
   void initState() {
     ok();
-     user = Utilisateur.user;
-    //_name=user!.name! == null ? "" : user!.name!;
-    //_email=user!.email == null? "" : user!.email;
-    //_phone=user!.tel! == null?  "": user!.tel!;
-    //_password=user!.password;
-    //_adresse = user!.adresse! ?? "";
-     print(user);
     super.initState();
   }
-  Utilisateur? user;
-  String? _password = '';
-  String _name = '';
-  String _email = '';
-  String _phone="" ;//= '+1 555-123-4567';
-  String _bio = '';
-  String _adresse ='';
 
-  Widget buildTextField(String labelText, String placeholder, bool isPasswordTextField){
+  bool bom = true;
+  Utilisateur? user;
+  final _password = TextEditingController();
+  final _name = TextEditingController();
+  final _email = TextEditingController();
+  final _phone= TextEditingController();
+  String? photo;
+  final _adresse = TextEditingController();
+
+  Widget buildTextField(String labelText, TextEditingController placeholder){
     bool isObscurePassword = true;
+    //print(placeholder);
 
     return Padding(
-        padding: const EdgeInsets.only(bottom: 30),
+        padding: const EdgeInsets.only(bottom: 20),
         child: TextField(
-          obscureText: isPasswordTextField ?isObscurePassword:false,
+          controller: placeholder,
           decoration: InputDecoration(
-            suffixIcon: isPasswordTextField ?
-                IconButton(
-                    onPressed: () {
-
-                    },
-                    icon: const Icon(Icons.remove_red_eye,color: Colors.grey,)
-                ):null,
             contentPadding: const EdgeInsets.only(bottom: 3),
             labelText: labelText,
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeholder,
             hintStyle: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -129,7 +125,7 @@ class _ProfilePageState extends State<Profile> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text('Profil'),
       ),
       body: Container(
             padding: const EdgeInsets.all(15),
@@ -153,8 +149,9 @@ class _ProfilePageState extends State<Profile> {
                             shape: BoxShape.circle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image:
-                              NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2F10.png?alt=media&token=e310a71e-4622-4ed3-b9e8-35bd60d551e6"),
+                              image: photo == null 
+                                  ? NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2Flogo.jpg?alt=media&token=71396168-cb49-4569-bc68-86865480f6d4")
+                                  : NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2F10.png?alt=media&token=e310a71e-4622-4ed3-b9e8-35bd60d551e6"),
                             )
                           ),
                         ),
@@ -181,11 +178,39 @@ class _ProfilePageState extends State<Profile> {
                     ),
                   ),
                   const SizedBox(height: 30,),
-                  buildTextField("Nom & Prenoms",_name,false),
-                  buildTextField("Email", _email, false),
-                  buildTextField("Phone", _phone, false),
-                  buildTextField("Password", _password!, true),
-                  buildTextField("Adresse", _adresse, false),
+                  buildTextField("Nom & Prenoms",_name),
+                  buildTextField("Email", _email),
+                  buildTextField("Phone", _phone),
+                  Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: TextField(
+                        controller: _password,
+                        obscureText: bom,
+                        decoration: InputDecoration(
+                            suffixIcon:
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  bom = false;
+                                });
+                              },
+                              icon: bom
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off),
+                            ),
+                            contentPadding: const EdgeInsets.only(bottom: 3),
+                            labelText: "Password",
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            hintStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: grey
+                            )
+                        ),
+                      )
+                  ),
+                  //buildTextField("Password", _password!, true),
+                  buildTextField("Adresse", _adresse),
                   const SizedBox(height: 30,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

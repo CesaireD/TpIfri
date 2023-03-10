@@ -28,7 +28,7 @@ class HomePageState extends State<HomePage>{
   final _recherche = TextEditingController();
   String _dropdownValue = "Art contemporain";
   String _searchValue = '';
-  int choix=0;
+  int choix=2;
   final List<String> _suggestions = [
     'contemporain',
     'peinture',
