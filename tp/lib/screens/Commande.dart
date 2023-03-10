@@ -52,13 +52,14 @@ class _CommandeRow extends State<CommandeRow> {
                       backgroundColor: MaterialStateProperty.resolveWith((color) => Colors.blue[900])
                   ),
                   onPressed: ()async {
-                    final mail = await FirebaseAuth.instance.currentUser!.email;
-                    print("${mail!}");
+                    final mail = await FirebaseAuth.instance.currentUser!.uid;
+                    print("${mail}");
                     final q =await Utilisateur.fetchByEmail(mail.toString());
-                    print(q);
+
                     final user = Utilisateur.user;
                     ProdString.name = user!.name!;
                     ProdString.e_mail = user.email;
+                    print("${user!.email}");
                     ProdString.phone = user.tel!;
                     ProdString.amount = widget.total.toInt();
                   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){

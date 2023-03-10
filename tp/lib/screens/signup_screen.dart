@@ -16,6 +16,8 @@ class SignUpScreen extends StatefulWidget {
 class InitState extends State<SignUpScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final nameController = TextEditingController();
+  final phonController =TextEditingController();
 
   bool _passwordVisible = false;
   final formKey = GlobalKey<FormState>();
@@ -46,6 +48,7 @@ class InitState extends State<SignUpScreen> {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    nameController.dispose();
     super.dispose();
   }
   @override
@@ -102,7 +105,68 @@ class InitState extends State<SignUpScreen> {
         Form(
             key: formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(left: 20, right: 20, top: 70),
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  height: 54,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.grey[200],
+                    boxShadow: const [
+                      BoxShadow(
+                          offset: Offset(0, 10),
+                          blurRadius: 50,
+                          color: Color(0xffEEEEEE)),
+                    ],
+                  ),
+                  child: TextFormField(
+                    controller: nameController,
+                    keyboardType: TextInputType.name,
+                    decoration: const InputDecoration(
+                        hintText: "Entrez votre nom",
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        //icon: Icon(Icons.email, color: Color.fromARGB(255, 49, 98, 231),)
+                    ),
+                    textInputAction: TextInputAction.next,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (name) => name != null && !EmailValidator.validate(name) ? "Champs obligatoire" : null,
+                    cursorColor: const Color.fromARGB(255, 49, 98, 231),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(left: 20, right: 20, top: 70),
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  height: 54,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.grey[200],
+                    boxShadow: const [
+                      BoxShadow(
+                          offset: Offset(0, 10),
+                          blurRadius: 50,
+                          color: Color(0xffEEEEEE)),
+                    ],
+                  ),
+                  child: TextFormField(
+                    controller: phonController,
+                    keyboardType: TextInputType.phone,
+                    decoration: const InputDecoration(
+                        hintText: " Entrez votre numéro de téléphone",
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        //icon: Icon(Icons.email, color: Color.fromARGB(255, 49, 98, 231),)
+                    ),
+                    textInputAction: TextInputAction.next,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    //validator: (phone) => phone != null && !EmailValidator.validate(phone) ? "cHAMPS VIDE" : null,
+                    cursorColor: const Color.fromARGB(255, 49, 98, 231),
+                  ),
+                ),
                 Container(
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(left: 20, right: 20, top: 70),
@@ -352,7 +416,9 @@ class InitState extends State<SignUpScreen> {
                 ),
                 onTap: () {
                   // Write Tap Code Here.
-                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
+                    return Login();
+                  }));
                 },
               )
             ],
