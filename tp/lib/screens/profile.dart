@@ -1,7 +1,7 @@
 
 
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,7 +20,8 @@ class _ProfilePageState extends State<Profile> {
   File? pickedFile;
   ImagePicker imagePicker = ImagePicker();
   ok()async {
-    final a = await Utilisateur.fetchByEmail(FirebaseAuth.instance.currentUser!.uid);
+    id = FirebaseAuth.instance.currentUser!.uid;
+    final a = await Utilisateur.fetchByEmail(id);
     user = Utilisateur.user;
     _name.text= user!.name!;
     _email.text=user!.email;
@@ -28,6 +29,7 @@ class _ProfilePageState extends State<Profile> {
     _password.text=user!.password;
     _adresse.text = user!.adresse ?? "";
     photo = user!.picture;
+    _date = DateTime.parse(user!.date);
     print(user!.name);
   }
   @override
@@ -36,6 +38,9 @@ class _ProfilePageState extends State<Profile> {
     super.initState();
   }
 
+  final formKey = GlobalKey<FormState>();
+  late String id;
+  late DateTime _date;
   bool bom = true;
   Utilisateur? user;
   final _password = TextEditingController();
@@ -51,7 +56,7 @@ class _ProfilePageState extends State<Profile> {
 
     return Padding(
         padding: const EdgeInsets.only(bottom: 20),
-        child: TextField(
+        child: TextFormField(
           controller: placeholder,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.only(bottom: 3),
@@ -63,6 +68,8 @@ class _ProfilePageState extends State<Profile> {
               color: grey
             )
           ),
+            validator: (value) {return value == null || value == ""? "Ce champs est obligatoire": null;}
+
         )
     );
   }
@@ -178,74 +185,87 @@ class _ProfilePageState extends State<Profile> {
                     ),
                   ),
                   const SizedBox(height: 30,),
-                  buildTextField("Nom & Prenoms",_name),
-                  buildTextField("Email", _email),
-                  buildTextField("Phone", _phone),
-                  Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: TextField(
-                        controller: _password,
-                        obscureText: bom,
-                        decoration: InputDecoration(
-                            suffixIcon:
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  bom = false;
-                                });
-                              },
-                              icon: bom
-                                  ? const Icon(Icons.visibility)
-                                  : const Icon(Icons.visibility_off),
-                            ),
-                            contentPadding: const EdgeInsets.only(bottom: 3),
-                            labelText: "Password",
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            hintStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: grey
-                            )
-                        ),
+                  Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          buildTextField("Nom & Prenoms",_name),
+                          buildTextField("Email", _email),
+                          buildTextField("Phone", _phone),
+                          Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: TextFormField(
+                                controller: _password,
+                                obscureText: bom,
+                                decoration: InputDecoration(
+                                    suffixIcon:
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          bom = false;
+                                        });
+                                      },
+                                      icon: bom
+                                          ? const Icon(Icons.visibility)
+                                          : const Icon(Icons.visibility_off),
+                                    ),
+                                    contentPadding: const EdgeInsets.only(bottom: 3),
+                                    labelText: "Password",
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    hintStyle: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: grey
+                                    )
+                                ),
+                                validator: (value) {return value == null || value == ""? "Ce champs est obligatoire": null;}
+                              )
+                          ),
+                          //buildTextField("Password", _password!, true),
+                          buildTextField("Adresse", _adresse),
+                          const SizedBox(height: 30,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              OutlinedButton(
+                                onPressed: (){
+
+                                },
+                                style: OutlinedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                                ),
+                                child: const Text("ANNULER",style: TextStyle(
+                                  fontSize: 15,
+                                  letterSpacing: 2,
+                                  color: Colors.black,
+                                )),
+                              ),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    Utilisateur u = Utilisateur(email: _name.text, password: _password.text, id: id, tel: _phone.text, name: _name.text, adresse: _adresse.text,date: _date);
+                                    await FirebaseFirestore.instance.collection('user').doc(id).update(u.toJson());
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.blue,
+                                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                                ),
+                                child: const Text("ENREGISTRER",style: TextStyle(
+                                  fontSize: 15,
+                                  letterSpacing: 2,
+                                  color: Colors.white,
+                                )),
+                              )
+                            ],
+                          )
+                        ],
                       )
                   ),
-                  //buildTextField("Password", _password!, true),
-                  buildTextField("Adresse", _adresse),
-                  const SizedBox(height: 30,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      OutlinedButton(
-                          onPressed: (){
 
-                          },
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 40),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
-                        ),
-                          child: const Text("ANNULER",style: TextStyle(
-                            fontSize: 15,
-                            letterSpacing: 2,
-                            color: Colors.black,
-                          )),
-                      ),
-                      ElevatedButton(
-                          onPressed: () {
 
-                          },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
-                        ),
-                          child: const Text("ENREGISTRER",style: TextStyle(
-                            fontSize: 15,
-                            letterSpacing: 2,
-                            color: Colors.white,
-                          )),
-                      )
-                    ],
-                  )
                 ],
               ),
             ),
@@ -256,5 +276,9 @@ class _ProfilePageState extends State<Profile> {
   void takePhoto(ImageSource source) async {
     final pickedImage = await imagePicker.pickImage(source: source, imageQuality: 100);
     pickedFile = File(pickedImage!.path);
+    print(pickedFile);
+    setState(() {
+      photo = pickedFile.toString();
+    });
   }
 }
