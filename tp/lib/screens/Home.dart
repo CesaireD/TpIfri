@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_nullsafety/carousel_nullsafety.dart';
@@ -9,6 +10,7 @@ import 'package:tp/screens/profile.dart';
 import '../helpers/style.dart';
 
 import '../Search.dart';
+import '../modele/Panier.dart';
 import '../widgets/Drawer.dart';
 import '../widgets/FeaturedProducts.dart';
 import '../widgets/featured_card.dart';
@@ -18,6 +20,8 @@ class HomePage extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
+    Panier.dispose();
+    Panier.fetch(FirebaseAuth.instance.currentUser!.uid);
     return HomePageState();
   }
 

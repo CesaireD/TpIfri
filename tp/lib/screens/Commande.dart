@@ -53,9 +53,9 @@ class _CommandeRow extends State<CommandeRow> {
                   ),
                   onPressed: ()async {
                     final mail = await FirebaseAuth.instance.currentUser!.uid;
-                    print("${mail}");
+                    print("email :${mail}");
                     final q =await Utilisateur.fetchByEmail(mail.toString());
-
+                    print(" qqq: $q");
                     final user = Utilisateur.user;
                     ProdString.name = user!.name!;
                     ProdString.e_mail = user.email;

@@ -3,10 +3,10 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tp/modele/User.dart';
-import 'package:tp/screens/update_profile.dart';
 
 import '../helpers/style.dart';
 
@@ -32,6 +32,7 @@ class _ProfilePageState extends State<Profile> {
     _date = user!.date;
     print(user!.name);
   }
+
   @override
   void initState() {
     ok();
@@ -74,8 +75,21 @@ class _ProfilePageState extends State<Profile> {
     );
   }
 
+ /* File? _image;
+  //todo fonction qui allait me servir de prendre les images
+  // Fonction pour ouvrir la galerie et sélectionner une image
+  Future<void> _pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.getImage(source: source);
+
+    setState(() {
+      _image = File(pickedFile!.path);
+    });
+  }*/
+
   Widget bottomSheet(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Container(
       width: double.infinity,
       height: size.height * 0.2,
@@ -156,7 +170,7 @@ class _ProfilePageState extends State<Profile> {
                             shape: BoxShape.circle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: photo == null 
+                              image: photo == null
                                   ? const NetworkImage("https://firebasestorage.googleapis.com/v0/b/elite-conquest-371806.appspot.com/o/tp%2Flogo.jpg?alt=media&token=71396168-cb49-4569-bc68-86865480f6d4")
                                   : NetworkImage(photo!),
                             )
@@ -244,7 +258,8 @@ class _ProfilePageState extends State<Profile> {
                               ElevatedButton(
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    Utilisateur u = Utilisateur(email: _name.text, password: _password.text, id: id, tel: _phone.text, name: _name.text, adresse: _adresse.text,date: _date);
+                                    //todo modification picture
+                                    Utilisateur u = Utilisateur(email: _name.text, password: _password.text, id: id, tel: _phone.text, name: _name.text, adresse: _adresse.text,date: _date,picture: photo);
                                     await FirebaseFirestore.instance.collection('user').doc(id).update(u.toJson());
                                   }
                                 },
@@ -274,22 +289,29 @@ class _ProfilePageState extends State<Profile> {
   }
 
   void takePhoto(ImageSource source) async {
-    /*final pickedImage = await imagePicker.pickImage(source: source, imageQuality: 100);
+    final pickedImage = await imagePicker.pickImage(source: source, imageQuality: 100);
     pickedFile = File(pickedImage!.path);
     print(pickedFile);
+   // FirebaseFirestone.collection(‘user’).doc(‘id’).update(´picture ´ : photo);
+   final p= await uploadFile(pickedFile!);
+   user!.picture=p;
+   FirebaseFirestore.instance.collection('user').doc(id).update(user!.toJson());
     setState(() {
-      photo = pickedFile.toString();
-    });*/
-    await FirebaseAuth.instance.currentUser!.updateDisplayName(_name.text);
-    String? profile = await FirebaseAuth.instance.currentUser!.displayName;
-    print("-------$profile");
-    //final a = PhoneAuthCredential().
-    //await FirebaseAuth.instance.currentUser!.updatePhoneNumber(.text);
-    profile = await FirebaseAuth.instance.currentUser!.phoneNumber;
-    print("-------$profile");
-    //await FirebaseAuth.instance.currentUser!.updateDisplayName(_name.text);
-    profile = await FirebaseAuth.instance.currentUser!.photoURL;
-    print("-------$profile");
+     photo = p;
+    });
 
+  }
+}
+final FirebaseStorage _storage = FirebaseStorage.instance;
+Future<String?> uploadFile(File file) async {
+ try {
+    final Reference reference = _storage.ref().child('images/${DateTime.now().toString()}');
+    final UploadTask uploadTask = reference.putFile(file);
+    final TaskSnapshot storageTaskSnapshot = await uploadTask;
+    final String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
+    return downloadUrl;
+  } catch (e) {
+    print(e);
+    return null;
   }
 }
