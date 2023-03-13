@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'screens/Home.dart';
-import 'modele/produit.dart';
+import 'package:tp/screens/signup_screen.dart';
 import 'screens/Login.dart';
 import 'utils/Constant.dart';
 
@@ -24,17 +23,14 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: /*const MyHomePage(title: "YOU",)*/
-      //Login()
-      MainPage()
-      //HomePage(),
-      //AjouterProduit()
-      //HomePage(),
+      home: const MainPage()
     );
   }
 }
 
 class MainPage extends StatelessWidget {
+  const MainPage({super.key});
+
   @override
   Widget build(BuildContext context) => Scaffold(
     body: StreamBuilder<User?> (
@@ -45,7 +41,7 @@ class MainPage extends StatelessWidget {
         }else if(snapshot.hasError){
           return const Center(child: Text('Erreur....'),);
         }else if(snapshot.hasData) {
-          return HomePage();
+          return const EmailVerificationScreen();
         }else {
           return Login();
         }

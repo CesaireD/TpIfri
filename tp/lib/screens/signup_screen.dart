@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:tp/screens/Home.dart';
 import 'package:tp/screens/signup_screen.dart';
 import '../helpers/common.dart';
 import '../main.dart';
@@ -27,11 +28,11 @@ class InitState extends State<SignUpScreen> {
 
   bool isLoading = false;
   _signup(email, password) async {
-    showDialog(
+    isLoading ? showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) => const Center(child: CircularProgressIndicator(),)
-    );
+    ) : null;
     try{
       final res = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
 
@@ -48,6 +49,9 @@ class InitState extends State<SignUpScreen> {
       print('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
       print(e);
       Constant.showSnackBar(e.message);
+      setState(() {
+        isLoading = false;
+      });
     }
 
     //navigatorKey.currentState!.popUntil(ModalRoute.withName('/HomePage'));
@@ -333,14 +337,37 @@ class EmailVerificationScreen extends StatefulWidget {
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   bool isEmailVerified = false;
+  bool canResendEmail = false;
   Timer? timer;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    FirebaseAuth.instance.currentUser?.sendEmailVerification();
-    timer =
-        Timer.periodic(const Duration(seconds: 3), (_) => checkEmailVerified());
+
+    isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+
+    if(!isEmailVerified) {
+      sendEmailVerefied();
+      timer = Timer.periodic(const Duration(seconds: 3), (_) => checkEmailVerified());
+    }
+
+
+  }
+
+  Future sendEmailVerefied() async {
+    try{
+      final user = FirebaseAuth.instance.currentUser!;
+      await user.sendEmailVerification();
+      setState(() {
+        canResendEmail = false;
+      });
+      await Future.delayed(const Duration(seconds: 5));
+      setState(() {
+        canResendEmail = true;
+      });
+    } catch (e) {
+      Constant.showSnackBar(e.toString());
+    }
   }
 
   checkEmailVerified() async {
@@ -351,9 +378,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     });
 
     if (isEmailVerified) {
-      // TODO: implement your code after email verification
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Email Successfully Verified")));
+      Constant.showSnackBar("Email Successfully Verified");
 
       timer?.cancel();
     }
@@ -368,7 +393,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return isEmailVerified ? HomePage() : SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(
@@ -378,7 +403,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
               const SizedBox(height: 30),
               const Center(
                 child: Text(
-                  'Check your \n Email',
+                  'Verefiez votre \n Email',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -387,7 +412,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: Center(
                   child: Text(
-                    'We have sent you a Email on  ${FirebaseAuth.instance.currentUser?.email}',
+                    'Un email de verification vous a ete envoye par ${FirebaseAuth.instance.currentUser?.email}',
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -400,7 +425,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                     .symmetric(horizontal: 32.0),
                 child: Center(
                   child: Text(
-                    'Verifying email....',
+                    'Verification du email....',
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -409,18 +434,17 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
               Padding(
                 padding: const EdgeInsets
                     .symmetric(horizontal: 32.0),
-                child: ElevatedButton(
-                  child: const Text('Resend'),
-                  onPressed: () {
-                    try {
-                      FirebaseAuth.instance.currentUser
-                          ?.sendEmailVerification();
-                    } catch (e) {
-                      debugPrint('$e');
-                    }
-                  },
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.email),
+                  label: const Text('Renvoyer',style: TextStyle(fontSize: 24),),
+                  onPressed: canResendEmail ? sendEmailVerefied : null,
                 ),
               ),
+              const SizedBox(height: 8,),
+              TextButton(
+                  onPressed: () => FirebaseAuth.instance.signOut(),
+                  child: Text("Retour", style: TextStyle(fontSize: 24),)
+              )
             ],
           ),
         ),
