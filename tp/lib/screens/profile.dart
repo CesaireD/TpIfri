@@ -29,7 +29,7 @@ class _ProfilePageState extends State<Profile> {
     _password.text=user!.password;
     _adresse.text = user!.adresse ?? "";
     photo = user!.picture;
-    _date = DateTime.parse(user!.date);
+    _date = user!.date;
     print(user!.name);
   }
   @override
@@ -274,11 +274,22 @@ class _ProfilePageState extends State<Profile> {
   }
 
   void takePhoto(ImageSource source) async {
-    final pickedImage = await imagePicker.pickImage(source: source, imageQuality: 100);
+    /*final pickedImage = await imagePicker.pickImage(source: source, imageQuality: 100);
     pickedFile = File(pickedImage!.path);
     print(pickedFile);
     setState(() {
       photo = pickedFile.toString();
-    });
+    });*/
+    await FirebaseAuth.instance.currentUser!.updateDisplayName(_name.text);
+    String? profile = await FirebaseAuth.instance.currentUser!.displayName;
+    print("-------$profile");
+    //final a = PhoneAuthCredential().
+    //await FirebaseAuth.instance.currentUser!.updatePhoneNumber(.text);
+    profile = await FirebaseAuth.instance.currentUser!.phoneNumber;
+    print("-------$profile");
+    //await FirebaseAuth.instance.currentUser!.updateDisplayName(_name.text);
+    profile = await FirebaseAuth.instance.currentUser!.photoURL;
+    print("-------$profile");
+
   }
 }
