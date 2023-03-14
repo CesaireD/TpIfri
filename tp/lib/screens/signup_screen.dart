@@ -44,7 +44,7 @@ class InitState extends State<SignUpScreen> {
       setState(() {
         isLoading = true;
       });
-      changeScreen(context,EmailVerificationScreen());
+      changeScreen(context,EmailVerificationScreen(email: email, password: password));
       //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EmailVerificationScreen()));
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -336,7 +336,8 @@ class InitState extends State<SignUpScreen> {
 
 
 class EmailVerificationScreen extends StatefulWidget {
-  const EmailVerificationScreen({Key? key}) : super(key: key);
+  String? email, password;
+  EmailVerificationScreen({Key? key, this.email, this.password}) : super(key: key);
 
   @override
   State<EmailVerificationScreen> createState() =>
@@ -401,7 +402,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return isEmailVerified ? HomePage() : SafeArea(
+    return isEmailVerified ? Login(email: widget.email, password: widget.password,) : SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(

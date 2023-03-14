@@ -11,6 +11,9 @@ import '../utils/Constant.dart';
 import 'Home.dart';
 
 class Login extends StatefulWidget{
+  String? email, password;
+
+  Login({super.key, this.email, this.password});
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -52,7 +55,14 @@ class LoginState extends State<Login>{
       print(e);
     }
     
-    //navigatorKey.currentState!.popUntil((route) => route.isFirst);
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    emailController.text = widget.email!;
+    passwordController.text = widget.password!;
   }
 
   @override
