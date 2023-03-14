@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -47,7 +48,6 @@ class _ProductRow extends State<ProductRow> {
     }
   }
 
-  void supprimer() {}
   List<Produit?> l =[];
   List<Produit>? produit;
 
@@ -75,7 +75,7 @@ class _ProductRow extends State<ProductRow> {
           return  Dismissible(
             key: UniqueKey(),
             direction: DismissDirection.horizontal,
-            onDismissed: (direction) {
+            onDismissed: (direction) async {
               if(index!=null){
                 total(produits[index].price);
               }
@@ -83,7 +83,7 @@ class _ProductRow extends State<ProductRow> {
               if(direction==DismissDirection.startToEnd){
                 onAddToFavorites();
               }else{
-                onDelete();
+                await onDelete(produits[index].id);
               }
 
               setState(() {
@@ -210,8 +210,9 @@ class _ProductRow extends State<ProductRow> {
           );
         });
   }
-void onDelete(){
+onDelete(String id) async {
   //TODO fonction pour supprimer un produit du panier
+  return await FirebaseFirestore.instance.collection('panier').doc(Panier.panier!.id).collection('produit').doc(id).delete();
 }
 somme(a,b) {return a+b;}
 div(a,b) { return ((a/b).round() * 100) / 100  ; }
