@@ -41,7 +41,7 @@ class MainPage extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }else if(snapshot.hasError){
           return const Center(child: Text('Erreur....'),);
-        }else if(snapshot.hasData) {
+        }else if(snapshot!.hasData) {
           return HomePage();
         }else {
           return Login();

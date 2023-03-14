@@ -59,8 +59,9 @@ class _ProductRow extends State<ProductRow> {
   }
   @override
   void initState() {
-    ok();
     super.initState();
+    Panier.dispose();
+    ok();
   }
   Widget show_list_produit() {
     print("+--------------------------------------------------------------------");
@@ -213,11 +214,11 @@ class _ProductRow extends State<ProductRow> {
   }
 onDelete(String id) async {
   //TODO fonction pour supprimer un produit du panier
+  await FirebaseFirestore.instance.collection('panier').doc(Panier.panier!.id).collection('produit').doc(id).delete();
   setState(() {
+    ok();
   });
-  return await FirebaseFirestore.instance.collection('panier').doc(Panier.panier!.id).collection('produit').doc(id).delete();
-
-  }
+}
 somme(a,b) {return a+b;}
 div(a,b) { return ((a/b).round() * 100) / 100  ; }
 
