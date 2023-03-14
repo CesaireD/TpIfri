@@ -72,7 +72,7 @@ class DrawerState extends State<Draweer>{
           },
         ),
         ListTile(
-          leading: const Icon(Icons.home_outlined),
+          leading: const Icon(Icons.person),
           title: const Text('Profile'),
           onTap: () {
               changeScreen(context, Profile());

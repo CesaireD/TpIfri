@@ -84,6 +84,7 @@ class _ProductRow extends State<ProductRow> {
                 onAddToFavorites();
               }else{
                 await onDelete(produits[index].id);
+                print("-------------Supprimer-------------");
               }
 
               setState(() {
@@ -212,8 +213,11 @@ class _ProductRow extends State<ProductRow> {
   }
 onDelete(String id) async {
   //TODO fonction pour supprimer un produit du panier
+  setState(() {
+  });
   return await FirebaseFirestore.instance.collection('panier').doc(Panier.panier!.id).collection('produit').doc(id).delete();
-}
+
+  }
 somme(a,b) {return a+b;}
 div(a,b) { return ((a/b).round() * 100) / 100  ; }
 
@@ -232,6 +236,7 @@ void total(int val) {
 
   void retour() {
     Navigator.pop(context);
+
   }
 
   void Rechercher() {}
