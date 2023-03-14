@@ -41,7 +41,7 @@ class MainPage extends StatelessWidget {
         }else if(snapshot.hasError){
           return const Center(child: Text('Erreur....'),);
         }else if(snapshot.hasData) {
-          return const EmailVerificationScreen();
+          return EmailVerificationScreen();
         }else {
           return Login();
         }
