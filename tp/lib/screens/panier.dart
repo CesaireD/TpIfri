@@ -54,13 +54,16 @@ class _ProductRow extends State<ProductRow> {
     await ProdString.dispose();
     await Panier.dispose();
     await Panier.fetch(FirebaseAuth.instance.currentUser!.uid);
-    oui = true;
+    setState(() {
+      oui = true;
+    });
+    return oui;
   }
   @override
   void initState() {
     super.initState();
     Panier.dispose();
-    ok();
+    final a=ok();
   }
   Widget show_list_produit() {
     print("+--------------------------------------------------------------------");
