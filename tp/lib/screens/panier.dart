@@ -48,14 +48,13 @@ class _ProductRow extends State<ProductRow> {
     }
   }
 
-  List<Produit?> l =[];
-  List<Produit>? produit;
+  bool oui = false;
 
   ok() async {
     await ProdString.dispose();
     await Panier.dispose();
     await Panier.fetch(FirebaseAuth.instance.currentUser!.uid);
-    print("${ProdString.prix}------------------------------------44");
+    oui = true;
   }
   @override
   void initState() {
@@ -391,7 +390,7 @@ Widget expanded_widget(int value){
 }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return oui ? Scaffold(
       appBar: AppBar(
         title: const Text("Panier"),
         backgroundColor: Colors.white,
@@ -432,6 +431,6 @@ Widget expanded_widget(int value){
                   expanded_widget(index_expanded)
                ],
           ),
-    );
+    ):const Center(child: CircularProgressIndicator(),);
   }
 }
