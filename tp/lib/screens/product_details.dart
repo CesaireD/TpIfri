@@ -1,5 +1,6 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tp/modele/Panier.dart';
 import 'package:tp/modele/User.dart';
 
 import '../helpers/common.dart';
@@ -14,6 +15,7 @@ import 'package:tp/modele/produit.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import 'cart.dart';
+import 'panier.dart';
 
 class ProductDetails extends StatefulWidget {
   final Produit? product;
@@ -27,10 +29,13 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   final _key = GlobalKey<ScaffoldState>();
 
+  late int number;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    number = Panier.prod.length;
   }
 
   @override
@@ -149,7 +154,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     alignment: Alignment.centerLeft,
                     child: InkWell(
                       onTap: () {
-                        changeScreen(context, CartScreen());
+                        changeScreen(context, ProductRow());
                       },
                       child: Padding(
                           padding: const EdgeInsets.all(4),
@@ -157,11 +162,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                             elevation: 10,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20)),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Icon(Icons.shopping_cart),
+                            child: Stack(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(Icons.shopping_cart),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text('$number'),
+                                )
+                              ],
                             ),
-                          )),
+                          )
+                      ),
                     ),
                   ),
                 ),

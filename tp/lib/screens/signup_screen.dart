@@ -34,6 +34,7 @@ class InitState extends State<SignUpScreen> {
         builder: (context) => const Center(child: CircularProgressIndicator(),)
     ) : null;
     try{
+      nameController.text = nameController.text.toUpperCase();
       final res = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
 
       final u = Utilisateur(id: res.user!.uid,email: emailController.text.trim(),password: passwordController.text.trim(),name: nameController.text.trim(),tel: phonController.text.trim(),date: DateTime.now());
@@ -46,16 +47,20 @@ class InitState extends State<SignUpScreen> {
       changeScreen(context,EmailVerificationScreen());
       //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EmailVerificationScreen()));
     } on FirebaseAuthException catch (e) {
-      print('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
-      print(e);
-      Constant.showSnackBar(e.message);
+      setState(() {
+        isLoading = false;
+      });
+      if (e.code == 'email-already-in-use') {
+        Constant.showSnackBar("Un compte existe deja pour ce email");
+      }
+    } catch (e) {
+      Constant.showSnackBar(e.toString());
       setState(() {
         isLoading = false;
       });
     }
-
-    //navigatorKey.currentState!.popUntil(ModalRoute.withName('/HomePage'));
   }
+    //navigatorKey.currentState!.popUntil(ModalRoute.withName('/HomePage'));
 
   @override
   void dispose() {
@@ -258,6 +263,9 @@ class InitState extends State<SignUpScreen> {
                 GestureDetector(
                   onTap: () async {
                     if (!isLoading && formKey.currentState!.validate()) {
+                      setState(() {
+                        isLoading = true;
+                      });
                      await _signup(emailController.text,passwordController.text);
                      // print('+++++++++++on++++++++++++++');
                       //final res = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
@@ -442,7 +450,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
               ),
               const SizedBox(height: 8,),
               TextButton(
-                  onPressed: () => FirebaseAuth.instance.signOut(),
+                  onPressed: () => changeScreen(context, Login()),//FirebaseAuth.instance.signOut(),
                   child: Text("Retour", style: TextStyle(fontSize: 24),)
               )
             ],
