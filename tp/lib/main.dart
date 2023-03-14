@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tp/screens/Home.dart';
 import 'package:tp/screens/signup_screen.dart';
 import 'screens/Login.dart';
 import 'utils/Constant.dart';
@@ -41,7 +42,7 @@ class MainPage extends StatelessWidget {
         }else if(snapshot.hasError){
           return const Center(child: Text('Erreur....'),);
         }else if(snapshot.hasData) {
-          return EmailVerificationScreen();
+          return HomePage();
         }else {
           return Login();
         }
